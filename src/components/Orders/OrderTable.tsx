@@ -4,6 +4,12 @@ import Table from "../Table";
 import { ORDER_STATUS, ORDER_STATUS_BADGE_CLASS } from "../../utils/constants";
 import { convertDateToLocal } from "../../utils/common";
 import { DELIVERY_STATUS } from "../../utils/constants";
+import { uploadUrl } from "../../utils/axios";
+
+const getReceiptUrl = (receiptUrl: string) => {
+  if (!receiptUrl) return "";
+  return `${uploadUrl}${receiptUrl.replace(/^\/?uploads\/?/, "")}`;
+};
 
 const OrderCheckbox = ({ id, selectedOrders, onSelect }: any) => {
   const handleCheckboxChange = () => {
@@ -146,6 +152,18 @@ function OrderTable({
               <button className="btn btn-success btn-sm" onClick={() => generateOrderPdf(props.row.original)}>
                 <i className="fas fa-download"></i>
               </button>
+
+              {props.row.original.receipt_url && (
+                <a
+                  href={getReceiptUrl(props.row.original.receipt_url)}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="btn btn-info btn-sm mt-2"
+                  title="View stored invoice"
+                >
+                  <i className="fas fa-file-invoice"></i>
+                </a>
+              )}
 
               {/* <button onClick={() => handleOrderDelete(props.row.original.id)} className="btn btn-danger btn-sm" title="Cancel Order">
                 <i className="fas fa-trash"></i>

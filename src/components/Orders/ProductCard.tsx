@@ -101,7 +101,7 @@ function ProductCard({
                           </select>
                         )}
                       </td>
-                      <td className="text-end">{item.delivery_status != 4 ? item.price * item.count.toFixed(2) : 0}</td>
+                      <td className="text-end">{item.delivery_status != 4 ? (Number(item.price) * Number(item.count)).toFixed(2) : 0}</td>
                       <td>
                         {" "}
                         {item.delivery_status != 4 && (
