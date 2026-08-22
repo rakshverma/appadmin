@@ -37,6 +37,17 @@ function AddProductPrice() {
     control,
   });
 
+  const getPinCodeText = (zipCodes: any) => {
+    if (!zipCodes) return "";
+    if (Array.isArray(zipCodes)) return zipCodes.join(", ");
+    try {
+      const parsed = JSON.parse(zipCodes);
+      return Array.isArray(parsed) ? parsed.join(", ") : "";
+    } catch (e) {
+      return "";
+    }
+  };
+
   useEffect(() => {
     dispatch(getProductPriceEditInfo({ productId, distributerId }));
     return () => {
@@ -49,6 +60,7 @@ function AddProductPrice() {
     reset({
       name: editInfo.name,
       franchise: franchiseInfo?.franchise_name || franchiseInfo?.name,
+      pinCodes: getPinCodeText(franchiseInfo?.zip_codes),
       is_available: editInfo.is_available || 0,
       delevery_days: editInfo.delevery_days ? JSON.parse(editInfo.delevery_days) : null,
       quantity_wise_price: editInfo.quantity_wise_price

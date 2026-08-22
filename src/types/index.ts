@@ -171,6 +171,7 @@ export interface EditPriceFormProps {
   formState: any;
   name: string | null;
   franchise: string | number | null;
+  pinCodes: string;
   is_available: boolean | null;
   delevery_days: any;
   quantity_wise_price: any;

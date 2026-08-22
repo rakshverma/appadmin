@@ -95,6 +95,28 @@ function PriceForm({
                         />
                       </div>
                     </div>
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <Input
+                          type={"text"}
+                          name={"pinCodes"}
+                          label={"Selling Pincodes"}
+                          placeholder={"Example: 110001, 110002"}
+                          className={"form-control"}
+                          onChange={handleChange}
+                          register={register}
+                          validationObj={{
+                            required: "Please enter at least one pincode",
+                            validate: (value: string) => {
+                              const pins = `${value || ""}`.split(/[\s,]+/).map((pin) => pin.trim()).filter(Boolean);
+                              return pins.length > 0 && pins.every((pin) => /^[1-9][0-9]{5}$/.test(pin)) ? true : "Enter valid 6 digit pincodes separated by commas";
+                            },
+                          }}
+                          error={errors?.pinCodes || null}
+                        />
+                        <small className="text-muted">These pincodes will be added to the selected franchise and used by the customer storefront.</small>
+                      </div>
+                    </div>
                     <div className="col-md-3">
                       <div className="form-group">
                         <Select
