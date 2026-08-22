@@ -1,0 +1,27 @@
+.margin-0 {
+    margin: 0px
+}
+.padding-0 {
+    padding: 0px;
+}
+.left-menu-simplebar {
+    right: -20px; bottom: 0px;
+}
+.left-menu-simplebar-wrapper {
+    height: 100%; padding-right: 20px; padding-bottom: 0px; overflow: hidden scroll;
+}
+.left-menu-simplebar-placeholder {
+    width: auto; height: 1321px;
+}
+.visibility-hidden {
+    visibility: hidden;
+}
+.left-menu-simplebar-scrollbar {
+    transform: translate3d(0px, 0px, 0px); display: none;
+}
+.visibility-visible {
+    visibility: visible;
+}
+.left-menu-simplebar-scrollbar-visible {
+    height: 57px; transform: translate3d(0px, 0px, 0px); display: block;
+}
