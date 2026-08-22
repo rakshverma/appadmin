@@ -26,7 +26,7 @@ function* loginSaga(action: any): any {
     yield put({ type: LOGIN_SUCCESS });
   } catch (error: any) {
     console.log("LOGIN ERROR = ", error);
-    const errMsg = error?.response?.data?.message || "Something went wrong. Please try again.";
+    const errMsg = error?.response?.data?.message || "Please try again.";
     yield put({ type: HIDE_LOADER });
     yield put({ type: SHOW_ERROR_MESSAGE, payload: errMsg });
   }
@@ -40,7 +40,7 @@ function* forgotPassSaga(action: any): any {
     yield put({ type: HIDE_LOADER });
     yield put({ type: FORGOT_PASS_SUCCESS });
   } catch (error: any) {
-    const errMsg = error?.response?.data?.message || "Something went wrong. Please try again.";
+    const errMsg = error?.response?.data?.message || "Please try again.";
     yield put({ type: HIDE_LOADER });
     yield put({ type: SHOW_ERROR_MESSAGE, payload: errMsg });
   }

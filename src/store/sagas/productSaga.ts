@@ -60,7 +60,7 @@ function* addProductSaga(action: any): any {
     });
   } catch (e: any) {
     console.log("ADD product ERROR = ", e);
-    const errMsg = e?.response?.data?.message || "Something went wrong. Please try again.";
+    const errMsg = e?.response?.data?.message || "Please try again.";
     yield put({ type: HIDE_LOADER });
     yield put({ type: SHOW_ERROR_MESSAGE, payload: errMsg });
   }
@@ -93,7 +93,7 @@ function* editProductSaga(action: any): any {
     });
   } catch (e: any) {
     console.log("ADD CATEGORY ERROR = ", e);
-    const errMsg = e?.response?.data?.message || "Something went wrong. Please try again.";
+    const errMsg = e?.response?.data?.message || "Please try again.";
     yield put({ type: HIDE_LOADER });
     // yield put({ type: ADD_PRODUCT_ERROR, payload: errMsg });
     yield put({ type: SHOW_ERROR_MESSAGE, payload: errMsg });
@@ -111,10 +111,8 @@ function* getProductSaga(action: any): any {
     yield put({ type: SET_PRICE_FRANCHISE_ID, payload: response?.data?.data?.franchiseId });
     yield put({ type: HIDE_LOADER });
   } catch (e: any) {
-    const errMsg = e?.response?.data?.message || "Something went wrong. Please try again.";
     yield put({ type: HIDE_LOADER });
-    // yield put({ type: ADD_PRODUCT_ERROR, payload: errMsg });
-    yield put({ type: SHOW_ERROR_MESSAGE, payload: errMsg });
+    yield put({ type: SET_PRODUCT_LIST, payload: { productList: [], franchiseList: [], franchiseId: null } });
   }
 }
 
@@ -129,9 +127,8 @@ function* getProductPriceEditInfoSaga(action: any): any {
     });
     yield put({ type: HIDE_LOADER });
   } catch (e: any) {
-    const errMsg = e?.response?.data?.message || "Something went wrong. Please try again.";
     yield put({ type: HIDE_LOADER });
-    yield put({ type: SHOW_ERROR_MESSAGE, payload: errMsg });
+    yield put({ type: SET_PRODUCT_PRICE_ON_FRANCHISE, payload: { productList: [] } });
   }
 }
 
@@ -147,9 +144,8 @@ function* setProductPriceOnFranchiseSaga(action: any): any {
     });
     yield put({ type: HIDE_LOADER });
   } catch (e: any) {
-    const errMsg = e?.response?.data?.message || "Something went wrong. Please try again.";
     yield put({ type: HIDE_LOADER });
-    yield put({ type: SHOW_ERROR_MESSAGE, payload: errMsg });
+    yield put({ type: SET_PRODUCT_REVIEW_LIST, payload: [] });
   }
 }
 
@@ -171,7 +167,7 @@ function* updateProductPriceSaga(action: any): any {
     });
     yield put({ type: HIDE_LOADER });
   } catch (e: any) {
-    const errMsg = e?.response?.data?.message || "Something went wrong. Please try again.";
+    const errMsg = e?.response?.data?.message || "Please try again.";
     yield put({ type: HIDE_LOADER });
     yield put({ type: SHOW_ERROR_MESSAGE, payload: errMsg });
   }
@@ -189,7 +185,7 @@ function* getProductReviewSaga(): any {
     yield put({ type: SET_PRODUCT_REVIEW_LIST, payload: response?.data?.data });
     yield put({ type: HIDE_LOADER });
   } catch (e: any) {
-    const errMsg = e?.response?.data?.message || "Something went wrong. Please try again.";
+    const errMsg = e?.response?.data?.message || "Please try again.";
     yield put({ type: HIDE_LOADER });
     yield put({ type: SHOW_ERROR_MESSAGE, payload: errMsg });
   }
@@ -208,7 +204,7 @@ function* updateProductStatusSaga(action: any): any {
     yield put({ type: SET_PRODUCT_STATUS, payload: productList });
     yield put({ type: HIDE_LOADER });
   } catch (e: any) {
-    const errMsg = e?.response?.data?.message || "Something went wrong. Please try again.";
+    const errMsg = e?.response?.data?.message || "Please try again.";
     yield put({ type: HIDE_LOADER });
     yield put({ type: SHOW_ERROR_MESSAGE, payload: errMsg });
   }
@@ -224,7 +220,7 @@ function* deleteReviewOnIdSaga(action: any): any {
     yield put({ type: HIDE_LOADER });
     yield put({ type: SHOW_SUCCESS_MESSAGE, payload: "Review deleted successfully" });
   } catch (e: any) {
-    const errMsg = e?.response?.data?.message || "Something went wrong. Please try again.";
+    const errMsg = e?.response?.data?.message || "Please try again.";
     yield put({ type: HIDE_LOADER });
     yield put({ type: SHOW_ERROR_MESSAGE, payload: errMsg });
   }

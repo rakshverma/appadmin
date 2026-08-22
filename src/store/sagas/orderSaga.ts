@@ -36,9 +36,8 @@ function* getOrdersSaga(): any {
     yield put({ type: SET_ORDERS_LIST, payload: response?.data?.data });
     yield put({ type: HIDE_LOADER });
   } catch (e: any) {
-    const errMsg = e?.response?.data?.message || "Something went wrong. Please try again.";
     yield put({ type: HIDE_LOADER });
-    yield put({ type: SHOW_ERROR_MESSAGE, payload: errMsg });
+    yield put({ type: SET_ORDERS_LIST, payload: [] });
   }
 }
 
@@ -49,9 +48,8 @@ function* getOrderListOnFranchiseId(action: any): any {
     yield put({ type: SET_ORDERS_LIST, payload: response?.data?.data });
     yield put({ type: HIDE_LOADER });
   } catch (e: any) {
-    const errMsg = e?.response?.data?.message || "Something went wrong. Please try again.";
     yield put({ type: HIDE_LOADER });
-    yield put({ type: SHOW_ERROR_MESSAGE, payload: errMsg });
+    yield put({ type: SET_ORDERS_LIST, payload: [] });
   }
 }
 
@@ -62,9 +60,8 @@ function* getDeleveryBoyOnFranchiseSaga(action: any): any {
     yield put({ type: SET_ORDERS_DELEVERYBOY_LIST, payload: response?.data?.data });
     yield put({ type: HIDE_LOADER });
   } catch (e: any) {
-    const errMsg = e?.response?.data?.message || "Something went wrong. Please try again.";
     yield put({ type: HIDE_LOADER });
-    yield put({ type: SHOW_ERROR_MESSAGE, payload: errMsg });
+    yield put({ type: SET_ORDERS_DELEVERYBOY_LIST, payload: [] });
   }
 }
 
@@ -76,9 +73,8 @@ function* updateDeleveryboyOnOrderSaga(action: any): any {
     yield put({ type: HIDE_LOADER });
     yield put({ type: SHOW_SUCCESS_MESSAGE, payload: "Delivery boy assigned successfully" });
   } catch (e: any) {
-    const errMsg = e?.response?.data?.message || "Something went wrong. Please try again.";
     yield put({ type: HIDE_LOADER });
-    yield put({ type: SHOW_ERROR_MESSAGE, payload: errMsg });
+    yield put({ type: SET_ORDERS_DELEVERYBOY_LIST, payload: [] });
   }
 }
 
@@ -89,9 +85,8 @@ function* getOrderDetailsOnIdSaga(action: any): any {
     yield put({ type: SET_ORDER_DETAILS_ON_ID, payload: response?.data?.data });
     yield put({ type: HIDE_LOADER });
   } catch (e: any) {
-    const errMsg = e?.response?.data?.message || "Something went wrong. Please try again.";
     yield put({ type: HIDE_LOADER });
-    yield put({ type: SHOW_ERROR_MESSAGE, payload: errMsg });
+    yield put({ type: SET_DELIVERY_LIST, payload: [] });
   }
 }
 
@@ -121,7 +116,7 @@ function* updateOrderDeliveryStatusSaga(action: any): any {
     yield put({ type: HIDE_LOADER });
     yield put({ type: SHOW_SUCCESS_MESSAGE, payload: "Order status updated successfully" });
   } catch (e: any) {
-    const errMsg = e?.response?.data?.message || "Something went wrong. Please try again.";
+    const errMsg = e?.response?.data?.message || "Please try again.";
     yield put({ type: HIDE_LOADER });
     yield put({ type: SHOW_ERROR_MESSAGE, payload: errMsg });
   }
@@ -134,7 +129,7 @@ function* getDeliveryBoyOnOrderIdSaga(action: any): any {
     yield put({ type: SET_ORDERS_DELEVERYBOY_LIST, payload: response?.data?.data });
     yield put({ type: HIDE_LOADER });
   } catch (e: any) {
-    const errMsg = e?.response?.data?.message || "Something went wrong. Please try again.";
+    const errMsg = e?.response?.data?.message || "Please try again.";
     yield put({ type: HIDE_LOADER });
     yield put({ type: SHOW_ERROR_MESSAGE, payload: errMsg });
   }
@@ -161,7 +156,7 @@ function* updateDeliveryBoyOnOrderIdSaga(action: any): any {
     yield put({ type: HIDE_LOADER });
     yield put({ type: SHOW_SUCCESS_MESSAGE, payload: "Delivery boy assigned successfully" });
   } catch (e: any) {
-    const errMsg = e?.response?.data?.message || "Something went wrong. Please try again.";
+    const errMsg = e?.response?.data?.message || "Please try again.";
     yield put({ type: HIDE_LOADER });
     yield put({ type: SHOW_ERROR_MESSAGE, payload: errMsg });
   }
@@ -180,7 +175,7 @@ function* cancelOrderOnIdSaga(action: any): any {
     yield put({ type: SET_ORDERS_LIST, payload: orderList });
     yield put({ type: HIDE_LOADER });
   } catch (e: any) {
-    const errMsg = e?.response?.data?.message || "Something went wrong. Please try again.";
+    const errMsg = e?.response?.data?.message || "Please try again.";
     yield put({ type: HIDE_LOADER });
     yield put({ type: SHOW_ERROR_MESSAGE, payload: errMsg });
   }
@@ -195,7 +190,7 @@ function* getDEliveryListOnIdSaga(action: any): any {
     yield put({ type: SET_DELIVERY_LIST, payload: response?.data?.data });
     yield put({ type: HIDE_LOADER });
   } catch (e: any) {
-    const errMsg = e?.response?.data?.message || "Something went wrong. Please try again.";
+    const errMsg = e?.response?.data?.message || "Please try again.";
     yield put({ type: HIDE_LOADER });
     yield put({ type: SHOW_ERROR_MESSAGE, payload: errMsg });
   }
@@ -225,7 +220,7 @@ function* cancelOrderItemsSaga(action: any): any {
     yield put({ type: SHOW_SUCCESS_MESSAGE, payload: "Orders canceled successfully" });
     yield put({ type: HIDE_LOADER });
   } catch (e: any) {
-    const errMsg = e?.response?.data?.message || "Something went wrong. Please try again.";
+    const errMsg = e?.response?.data?.message || "Please try again.";
     yield put({ type: HIDE_LOADER });
     yield put({ type: SHOW_ERROR_MESSAGE, payload: errMsg });
   }
@@ -256,7 +251,7 @@ function* cancelOrderItemSaga(action: any): any {
     yield put({ type: SHOW_SUCCESS_MESSAGE, payload: "Item canceled successfully" });
     yield put({ type: HIDE_LOADER });
   } catch (e: any) {
-    const errMsg = e?.response?.data?.message || "Something went wrong. Please try again.";
+    const errMsg = e?.response?.data?.message || "Please try again.";
     yield put({ type: HIDE_LOADER });
     yield put({ type: SHOW_ERROR_MESSAGE, payload: errMsg });
   }
@@ -286,7 +281,7 @@ function* completeOrderItemSaga(action: any): any {
     yield put({ type: SHOW_SUCCESS_MESSAGE, payload: "Orders completed successfully" });
     yield put({ type: HIDE_LOADER });
   } catch (e: any) {
-    const errMsg = e?.response?.data?.message || "Something went wrong. Please try again.";
+    const errMsg = e?.response?.data?.message || "Please try again.";
     yield put({ type: HIDE_LOADER });
     yield put({ type: SHOW_ERROR_MESSAGE, payload: errMsg });
   }
@@ -312,7 +307,7 @@ function* updateAdminNotesOnIdSaga(action: any): any {
     yield put({ type: HIDE_LOADER });
     yield put({ type: SHOW_SUCCESS_MESSAGE, payload: "Admin Delivery notes updated successfully" });
   } catch (e: any) {
-    const errMsg = e?.response?.data?.message || "Something went wrong. Please try again.";
+    const errMsg = e?.response?.data?.message || "Please try again.";
     yield put({ type: HIDE_LOADER });
     yield put({ type: SHOW_ERROR_MESSAGE, payload: errMsg });
   }
@@ -339,7 +334,7 @@ function* updateDeliveryDateOnOrderIdSaga(action: any): any {
     yield put({ type: HIDE_LOADER });
     yield put({ type: SHOW_SUCCESS_MESSAGE, payload: "OrderdDelivery date updated successfully" });
   } catch (e: any) {
-    const errMsg = e?.response?.data?.message || "Something went wrong. Please try again.";
+    const errMsg = e?.response?.data?.message || "Please try again.";
     yield put({ type: HIDE_LOADER });
     yield put({ type: SHOW_ERROR_MESSAGE, payload: errMsg });
   }

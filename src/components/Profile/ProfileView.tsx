@@ -1,6 +1,19 @@
 import React from "react";
 
+function parseZipCodes(zipCodes: any) {
+  if (!zipCodes) return [];
+  if (Array.isArray(zipCodes)) return zipCodes;
+  try {
+    const parsed = JSON.parse(zipCodes);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (e) {
+    return [];
+  }
+}
+
 function ProfileView({ userInfo }: any) {
+  const zipCodes = parseZipCodes(userInfo?.zip_codes);
+
   return (
     <div className="row">
       <div className="col-md-4">
@@ -43,8 +56,8 @@ function ProfileView({ userInfo }: any) {
           <>
             <label style={{ marginTop: 10 }}>List Of Pin Codes:</label>
             <div className="border p-3">
-              {userInfo?.zip_codes && JSON.parse(userInfo.zip_codes).length > 0
-                ? JSON.parse(userInfo.zip_codes).map((item: any, i: boolean) => {
+              {zipCodes.length > 0
+                ? zipCodes.map((item: any, i: number) => {
                     console.log("item.zip_codes = ", item);
                     return (
                       <div className="form-check form-check-inline mb-2" key={`zip_${i}`}>

@@ -27,7 +27,7 @@ function* getDeleveryBoyListSaga(): any {
     yield put({ type: SET_DELEVERY_BOY_LIST, payload: response?.data?.data });
     yield put({ type: HIDE_LOADER });
   } catch (e: any) {
-    const errMsg = e?.response?.data?.message || "Something went wrong. Please try again.";
+    const errMsg = e?.response?.data?.message || "Please try again.";
     yield put({ type: HIDE_LOADER });
     yield put({ type: SHOW_ERROR_MESSAGE, payload: errMsg });
   }
@@ -45,7 +45,7 @@ function* addDeleveryBoySaga(action: any): any {
     yield put({ type: SHOW_SUCCESS_MESSAGE, payload: "Delivery boy added successfully" });
   } catch (error: any) {
     console.log("ADD DELEVERY BOY ERROR = ", error);
-    const errMsg = error?.response?.data?.message || "Something went wrong. Please try again.";
+    const errMsg = error?.response?.data?.message || "Please try again.";
     yield put({ type: HIDE_LOADER });
     yield put({ type: SHOW_ERROR_MESSAGE, payload: errMsg });
   }
@@ -61,7 +61,7 @@ function* getDeliveryBoyOnIdSaga(action: any): any {
     yield put({ type: HIDE_LOADER });
   } catch (error: any) {
     console.log("ADD DELEVERY BOY ERROR = ", error);
-    const errMsg = error?.response?.data?.message || "Something went wrong. Please try again.";
+    const errMsg = error?.response?.data?.message || "Please try again.";
     yield put({ type: HIDE_LOADER });
     yield put({ type: SHOW_ERROR_MESSAGE, payload: errMsg });
   }
@@ -82,7 +82,7 @@ function* deleteDeliveryBoyOnIdSaga(action: any): any {
     yield put({ type: SHOW_SUCCESS_MESSAGE, payload: "Delivery boy deleted successfully" });
   } catch (error: any) {
     console.log("ADD DELEVERY BOY ERROR = ", error);
-    const errMsg = error?.response?.data?.message || "Something went wrong. Please try again.";
+    const errMsg = error?.response?.data?.message || "Please try again.";
     yield put({ type: HIDE_LOADER });
     yield put({ type: SHOW_ERROR_MESSAGE, payload: errMsg });
   }
@@ -102,7 +102,7 @@ function* editDeliveryBoySaga(action: any): any {
     yield put({ type: HIDE_LOADER });
     yield put({ type: SHOW_SUCCESS_MESSAGE, payload: "Delivery boy updated successfully" });
   } catch (error: any) {
-    const errMsg = error?.response?.data?.message || "Something went wrong. Please try again.";
+    const errMsg = error?.response?.data?.message || "Please try again.";
     yield put({ type: HIDE_LOADER });
     yield put({ type: SHOW_ERROR_MESSAGE, payload: errMsg });
   }

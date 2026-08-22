@@ -30,7 +30,7 @@ function* userSaga(action: any): any {
     yield put({ type: HIDE_LOADER });
   } catch (error: any) {
     console.log("valid token ERROR = ", error);
-    const errMsg = error?.response?.data?.message || "Something went wrong. Please try again.";
+    const errMsg = error?.response?.data?.message || "Please try again.";
     yield put({ type: HIDE_LOADER });
     yield put({ type: SHOW_ERROR_MESSAGE, payload: errMsg });
   }
@@ -55,7 +55,7 @@ function* getPinCodesOnUserSaga(action: any): any {
     yield put({ type: SET_PIN_ON_USER, payload: response?.data?.data });
     yield put({ type: HIDE_LOADER });
   } catch (e: any) {
-    const errMsg = e?.response?.data?.message || "Something went wrong. Please try again.";
+    const errMsg = e?.response?.data?.message || "Please try again.";
     yield put({ type: HIDE_LOADER });
     yield put({ type: SHOW_ERROR_MESSAGE, payload: errMsg });
   }
@@ -73,7 +73,7 @@ function* editUserProfileSaga(action: any): any {
     yield put({ type: SHOW_SUCCESS_MESSAGE, payload: "Profile updated successfully" });
   } catch (error: any) {
     console.log("edit profile ERROR = ", error);
-    const errMsg = error?.response?.data?.message || "Something went wrong. Please try again.";
+    const errMsg = error?.response?.data?.message || "Please try again.";
     yield put({ type: HIDE_LOADER });
     yield put({ type: SHOW_ERROR_MESSAGE, payload: errMsg });
   }
@@ -91,7 +91,7 @@ function* changePasswordSaga(action: any): any {
     yield put({ type: HIDE_LOADER });
   } catch (error: any) {
     console.log("Change password ERROR = ", error);
-    const errMsg = error?.response?.data?.message || "Something went wrong. Please try again.";
+    const errMsg = error?.response?.data?.message || "Please try again.";
     yield put({ type: HIDE_LOADER });
     yield put({ type: SHOW_ERROR_MESSAGE, payload: errMsg });
   }

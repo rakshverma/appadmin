@@ -12,6 +12,17 @@ import { addFranchiseAction, editFranchiseAction } from "../store/actions/franch
 import { CLEAR_PINCODE_LIST } from "./../store/actionTypes";
 const { franchiseListHeading, franchise, addFranchise, franchiseList } = constants;
 
+function parseZipCodes(zipCodes: any) {
+  if (!zipCodes) return [];
+  if (Array.isArray(zipCodes)) return zipCodes;
+  try {
+    const parsed = JSON.parse(zipCodes);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (e) {
+    return [];
+  }
+}
+
 function AddFranchise() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -64,7 +75,7 @@ function AddFranchise() {
       setValue("status", franchiseDetails?.status);
       setValue("state", franchiseDetails?.state || "West Bengal");
       setValue("district", franchiseDetails?.district);
-      setValue("zipCodes", franchiseDetails?.zip_codes ? JSON.parse(franchiseDetails?.zip_codes) : []);
+      setValue("zipCodes", parseZipCodes(franchiseDetails?.zip_codes));
     }
   }, [editId, franchiseDetails]);
 

@@ -5,6 +5,17 @@ import { convertDateToLocal } from "../../utils/common";
 
 function FranchiseTable({ franchiseList, onClickEdit, onClickDelete }: any) {
   console.log("franchiseListfranchiseList = ", franchiseList);
+  const formatZipCodes = (zipCodes: any) => {
+    if (!zipCodes) return "";
+    if (Array.isArray(zipCodes)) return zipCodes.join(", ");
+    try {
+      const parsed = JSON.parse(zipCodes);
+      return Array.isArray(parsed) ? parsed.join(", ") : "";
+    } catch (e) {
+      return "";
+    }
+  };
+
   const columns = useMemo(
     () => [
       {
@@ -31,7 +42,7 @@ function FranchiseTable({ franchiseList, onClickEdit, onClickDelete }: any) {
             <>
               {props.row.original.state}
               <br />
-              {props.row.original.district} - {props.row.original.zip_codes ? JSON.parse(props.row.original.zip_codes).toString() : null}
+              {props.row.original.district} - {formatZipCodes(props.row.original.zip_codes)}
             </>
           );
         },

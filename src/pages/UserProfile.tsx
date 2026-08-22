@@ -14,6 +14,17 @@ const breadCrumb = [
   { to: "", name: editProfile },
 ];
 
+function parseZipCodes(zipCodes: any) {
+  if (!zipCodes) return [];
+  if (Array.isArray(zipCodes)) return zipCodes;
+  try {
+    const parsed = JSON.parse(zipCodes);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (e) {
+    return [];
+  }
+}
+
 function UserProfile() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -61,7 +72,7 @@ function UserProfile() {
     setValue("status", userInfo.status);
     setValue("state", userInfo.state || "West Bengal");
     setValue("district", userInfo.district);
-    setValue("zipCodes", userInfo.zip_codes ? JSON.parse(userInfo.zip_codes) : []);
+    setValue("zipCodes", parseZipCodes(userInfo.zip_codes));
     if (userInfo?.role_id === 1 || userInfo?.role_id === 2) {
       dispatch(getPinCodesOnUserAction(userInfo.district));
     }
@@ -132,7 +143,7 @@ function UserProfile() {
     if (value === userInfo?.district) {
       const checkboxArray = document.querySelectorAll('input[name="zipCodes"]');
       const arr: any = [];
-      const codes = userInfo.zip_codes ? JSON.parse(userInfo.zip_codes) : [];
+      const codes = parseZipCodes(userInfo.zip_codes);
       console.log("codescodes = ", codes);
       checkboxArray.forEach((checkbox: any) => {
         console.log("CHECKBOX = ", checkbox.value);
@@ -146,7 +157,7 @@ function UserProfile() {
       console.log("arrarr = ", arr);
       setValue("zipCodes", arr);
     } else {
-      setValue("zipCodes", userInfo.zip_codes ? JSON.parse(userInfo.zip_codes) : []);
+      setValue("zipCodes", parseZipCodes(userInfo.zip_codes));
     }
   };
 

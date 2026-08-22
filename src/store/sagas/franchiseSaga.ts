@@ -37,7 +37,7 @@ function* getFranchiseSaga(): any {
     yield put({ type: SET_FRANCHISE_LIST, payload: response?.data?.data });
     yield put({ type: HIDE_LOADER });
   } catch (e: any) {
-    const errMsg = e?.response?.data?.message || "Something went wrong. Please try again.";
+    const errMsg = e?.response?.data?.message || "Please try again.";
     yield put({ type: HIDE_LOADER });
     yield put({ type: FRANCHISE_ERROR, payload: errMsg });
   }
@@ -52,7 +52,7 @@ function* getDistrictListSaga(): any {
     yield put({ type: SET_DISTRICT_LIST, payload: response?.data?.data });
     yield put({ type: HIDE_LOADER });
   } catch (e: any) {
-    const errMsg = e?.response?.data?.message || "Something went wrong. Please try again.";
+    const errMsg = e?.response?.data?.message || "Please try again.";
     yield put({ type: HIDE_LOADER });
     yield put({ type: SHOW_ERROR_MESSAGE, payload: errMsg });
   }
@@ -67,7 +67,7 @@ function* getPinCodesonDistrictSaga(action: any): any {
     yield put({ type: SET_PINCODE_LIST, payload: response?.data?.data });
     yield put({ type: HIDE_LOADER });
   } catch (e: any) {
-    const errMsg = e?.response?.data?.message || "Something went wrong. Please try again.";
+    const errMsg = e?.response?.data?.message || "Please try again.";
     yield put({ type: HIDE_LOADER });
     yield put({ type: SHOW_ERROR_MESSAGE, payload: errMsg });
   }
@@ -85,7 +85,7 @@ function* addFranchiseSaga(action: any): any {
     yield put({ type: SHOW_SUCCESS_MESSAGE, payload: "Franchise added successfully" });
   } catch (error: any) {
     console.log("ADD FRANCHISE ERROR = ", error);
-    const errMsg = error?.response?.data?.message || "Something went wrong. Please try again.";
+    const errMsg = error?.response?.data?.message || "Please try again.";
     yield put({ type: HIDE_LOADER });
     yield put({ type: SHOW_ERROR_MESSAGE, payload: errMsg });
   }
@@ -103,7 +103,7 @@ function* editFranchiseSaga(action: any): any {
     yield put({ type: SHOW_SUCCESS_MESSAGE, payload: "Franchise updated successfully" });
   } catch (error: any) {
     console.log("ADD FRANCHISE ERROR = ", error);
-    const errMsg = error?.response?.data?.message || "Something went wrong. Please try again.";
+    const errMsg = error?.response?.data?.message || "Please try again.";
     yield put({ type: HIDE_LOADER });
     yield put({ type: SHOW_ERROR_MESSAGE, payload: errMsg });
   }
@@ -116,7 +116,7 @@ function* getFranchiseRequestListSaga(action: any): any {
     yield put({ type: SET_FRANCHISE_REQUEST_LIST, payload: response?.data?.data });
     yield put({ type: HIDE_LOADER });
   } catch (e: any) {
-    const errMsg = e?.response?.data?.message || "Something went wrong. Please try again.";
+    const errMsg = e?.response?.data?.message || "Please try again.";
     yield put({ type: HIDE_LOADER });
     yield put({ type: SHOW_ERROR_MESSAGE, payload: errMsg });
   }
@@ -129,7 +129,7 @@ function* getFranchiseListOnRole(): any {
     yield put({ type: SET_FRANCHISE_LIST_ON_ROLE, payload: response?.data?.data });
     yield put({ type: HIDE_LOADER });
   } catch (e: any) {
-    const errMsg = e?.response?.data?.message || "Something went wrong. Please try again.";
+    const errMsg = e?.response?.data?.message || "Please try again.";
     yield put({ type: HIDE_LOADER });
     yield put({ type: SHOW_ERROR_MESSAGE, payload: errMsg });
   }
@@ -143,7 +143,7 @@ function* getShippingLIstOnFranchiseIdSaga(action: any): any {
     yield put({ type: SET_SHIPPING_LIST_ON_FRANCHISE, payload: response?.data?.data });
     yield put({ type: HIDE_LOADER });
   } catch (e: any) {
-    const errMsg = e?.response?.data?.message || "Something went wrong. Please try again.";
+    const errMsg = e?.response?.data?.message || "Please try again.";
     yield put({ type: HIDE_LOADER });
     yield put({ type: SHOW_ERROR_MESSAGE, payload: errMsg });
   }
@@ -161,7 +161,7 @@ function* updateShippingOnFranchiseSaga(action: any): any {
     yield put({ type: HIDE_LOADER });
     yield put({ type: SHOW_SUCCESS_MESSAGE, payload: "Shipping cost updated successfully" });
   } catch (e: any) {
-    const errMsg = e?.response?.data?.message || "Something went wrong. Please try again.";
+    const errMsg = e?.response?.data?.message || "Please try again.";
     yield put({ type: HIDE_LOADER });
     yield put({ type: SHOW_ERROR_MESSAGE, payload: errMsg });
   }
@@ -176,7 +176,7 @@ function* getFranchiseDetailsOnIdSaga(action: any): any {
     yield put({ type: SET_FRANCHISE_DETAILS, payload: response?.data?.data.franchiseDetails });
     yield put({ type: SET_PINCODE_LIST, payload: response?.data?.data.pinCodeList });
   } catch (e: any) {
-    const errMsg = e?.response?.data?.message || "Something went wrong. Please try again.";
+    const errMsg = e?.response?.data?.message || "Please try again.";
     yield put({ type: HIDE_LOADER });
     yield put({ type: SHOW_ERROR_MESSAGE, payload: errMsg });
   }
@@ -194,7 +194,7 @@ function* deleteFranchiseOnIdSaga(action: any): any {
     console.log("newList = ", newList);
     yield put({ type: SET_FRANCHISE_LIST, payload: newList });
   } catch (e: any) {
-    const errMsg = e?.response?.data?.message || "Something went wrong. Please try again.";
+    const errMsg = e?.response?.data?.message || "Please try again.";
     yield put({ type: HIDE_LOADER });
     yield put({ type: SHOW_ERROR_MESSAGE, payload: errMsg });
   }
