@@ -65,7 +65,7 @@ function AddProductPrice() {
       delevery_days: editInfo.delevery_days ? JSON.parse(editInfo.delevery_days) : null,
       quantity_wise_price: editInfo.quantity_wise_price
         ? JSON.parse(editInfo.quantity_wise_price)
-        : [{ quantity: "", unit: "kg", price: "", shipping: 0 }],
+        : [{ quantity: "", unit: "kg", price: "", stock_count: "", shipping: 0 }],
     });
   }, [reset, editInfo, franchiseInfo]);
 
@@ -78,7 +78,7 @@ function AddProductPrice() {
   };
 
   const handleAddRow = () => {
-    append({ quantity: "", unit: "kg", price: "", shipping: 0 }); // append a new row with the default values
+    append({ quantity: "", unit: "kg", price: "", stock_count: "", shipping: 0 }); // append a new row with the default values
   };
 
   const handleRemoveRow = (index: number) => {
