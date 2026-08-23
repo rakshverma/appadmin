@@ -12,6 +12,7 @@ import {
   CANCEL_ORDERS,
   CANCEL_ORDER_ITEM,
   COMPLETE_ORDERS,
+  PROCESS_ORDERS,
   UPDATE_ADMIN_NOTES,
   UPDATE_DELIVERY_DATE,
 } from "./../actionTypes";
@@ -58,6 +59,10 @@ export const cancelOrderItemAction = (orderId: any, itemId: any, mainOrderCancel
 
 export const completeOrdersAction = (orderIdList: any) => {
   return { type: COMPLETE_ORDERS, payload: orderIdList };
+};
+
+export const processOrdersAction = (orderIdList: any) => {
+  return { type: PROCESS_ORDERS, payload: orderIdList };
 };
 
 export const updateAdminNotesOnOrderId = (adminNotes: any, orderId: any) => {

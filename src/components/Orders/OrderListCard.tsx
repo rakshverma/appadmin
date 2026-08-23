@@ -19,6 +19,7 @@ function OrderListCard({
   filterOrderByFranchise,
   handleCancelOrder,
   handleCompleteOrder,
+  handleProcessOrder,
 }: any) {
   console.log("orderListorderList = ", orderList);
   const dispatch = useDispatch();
@@ -73,6 +74,11 @@ function OrderListCard({
     setSelectedOrders([]);
   };
 
+  const onProcessButtonClick = () => {
+    handleProcessOrder(selectedOrders);
+    setSelectedOrders([]);
+  };
+
   console.log("orderList = ", orderList);
 
   return (
@@ -91,6 +97,8 @@ function OrderListCard({
                 onClick={onDownloadButtonClick}
                 onAssignButtonClick={onHandleCancelOrders}
                 onStatusButtonClick={onStatusButtonClick}
+                processButtonText={"Process Orders"}
+                onProcessButtonClick={onProcessButtonClick}
               />
               {checkboxError && <p style={{ textAlign: "right", color: "red" }}>{checkboxError}</p>}
               <div className="row">
@@ -141,6 +149,7 @@ function OrderListCard({
                           franchiseList={franchiseList}
                           filterOrderByFranchise={filterOrderByFranchise}
                           selectedOrders={selectedOrders}
+                          handleCheckboxSelect={handleCheckboxSelect}
                         />
                       </div>
                     )}
@@ -155,6 +164,7 @@ function OrderListCard({
                           franchiseList={franchiseList}
                           filterOrderByFranchise={filterOrderByFranchise}
                           selectedOrders={selectedOrders}
+                          handleCheckboxSelect={handleCheckboxSelect}
                         />
                       </div>
                     )}

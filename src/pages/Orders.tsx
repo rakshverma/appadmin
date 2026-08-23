@@ -2,7 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { constants } from "./../utils/constants";
-import { getOrdersListAction, getOrderListOnFranchiseId, cancelOrdersAction, completeOrdersAction } from "../store/actions/orderAction";
+import {
+  getOrdersListAction,
+  getOrderListOnFranchiseId,
+  cancelOrdersAction,
+  completeOrdersAction,
+  processOrdersAction,
+} from "../store/actions/orderAction";
 import { getProductListAction } from "../store/actions/productAction";
 import OrderListCard from "../components/Orders/OrderListCard";
 import BreadCrumb from "../components/BreadCrumb";
@@ -108,6 +114,11 @@ function Orders() {
     dispatch(completeOrdersAction(list));
   };
 
+  const handleProcessOrder = (list: any) => {
+    if (!list.length) return;
+    dispatch(processOrdersAction(list));
+  };
+
   return (
     <div className="container-fluid" style={{ marginBottom: 100 + "px" }}>
       <BreadCrumb pageHeading={orderPageheading} breadCrumb={breadCrumb} />
@@ -127,6 +138,7 @@ function Orders() {
         selectedOrders={selectedOrders}
         handleCancelOrder={handleCancelOrder}
         handleCompleteOrder={handleCompleteOrder}
+        handleProcessOrder={handleProcessOrder}
       />
     </div>
   );

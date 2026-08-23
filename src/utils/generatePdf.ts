@@ -3,6 +3,14 @@ import jsPDF from "jspdf";
 import "jspdf-autotable";
 const baseUrl = window.location.origin;
 console.log("Base URL:", baseUrl);
+
+const getDeliveryDates = (orderDetails: any) => {
+  if (orderDetails.itemList) {
+    return orderDetails.itemList.map((item: any) => item.delivery_date || "");
+  }
+  return `${orderDetails.delivery_date || ""}`.split(",");
+};
+
 const generatePdf = (orderDetails: any) => {
   console.log("orderDetails = ", orderDetails);
   const options = {
@@ -21,11 +29,10 @@ const generatePdf = (orderDetails: any) => {
   // Define the data for your invoice (product details and shipping cost)
 
   // Define the table column widths and row heights (optional)
-  const columnWidths = [60, 20, 40, 30];
+  const columnWidths = [60, 30, 20, 25, 30];
   const rowHeights = 10;
 
   const companyLogo = `${baseUrl}/assets/imgs/jhatkabyte-logo.png`;
-  const qrCode = `${baseUrl}/assets/imgs/qr.jpg`;
   // Add company logo to the PDF (adjust the coordinates and dimensions as needed)
   //@ts-ignore
   doc.addImage(companyLogo, "PNG", 5, 5, 30, 25);
@@ -39,12 +46,11 @@ const generatePdf = (orderDetails: any) => {
   doc.text(`Order Number: ${orderDetails.ref_no}`, 10, startY);
   // startY = startY+10;
   doc.text(`Order Date: ${new Date(orderDetails.inserted_at).toLocaleDateString()}`, 10, (startY += 10));
-  doc.addImage(qrCode, "JPG", 150, startY - 40, 50, 50);
   const rows: any = [];
 
   if (orderDetails.itemList) {
     orderDetails.itemList.forEach((obj: any) => {
-      let arr = [obj.name, `${obj.quantity}${obj.unit}`, obj.count, obj.price];
+      let arr = [obj.name, obj.delivery_date || "", `${obj.quantity}${obj.unit}`, obj.count, obj.price];
       rows.push(arr);
     });
   } else {
@@ -53,13 +59,14 @@ const generatePdf = (orderDetails: any) => {
     const price = orderDetails.price.split(",");
     const units = orderDetails.units.split(",");
     const counts = orderDetails.counts.split(",");
+    const deliveryDates = getDeliveryDates(orderDetails);
     product_names.forEach((item: any, i: number) => {
-      let arr = [item, `${quantity[i]}${units[i]}`, counts[i], price[i]];
+      let arr = [item, deliveryDates[i] || "", `${quantity[i]}${units[i]}`, counts[i], price[i]];
       rows.push(arr);
     });
   }
 
-  const invoiceData = [["Product Name", "Quantity", "Units", "Price"], ...rows];
+  const invoiceData = [["Product Name", "Delivery Date", "Quantity", "Units", "Price"], ...rows];
   // Calculate the total amount
   //@ts-ignore
   const totalAmount = orderDetails.total_price;
@@ -127,11 +134,10 @@ export const generateMultiplePdf = (orderAray: any) => {
     // Define the data for your invoice (product details and shipping cost)
 
     // Define the table column widths and row heights (optional)
-    const columnWidths = [60, 20, 40, 30];
+    const columnWidths = [60, 30, 20, 25, 30];
     const rowHeights = 10;
 
     const companyLogo = `${baseUrl}/assets/imgs/jhatkabyte-logo.png`;
-    const qrCode = `${baseUrl}/assets/imgs/qr.jpg`;
     // Add company logo to the PDF (adjust the coordinates and dimensions as needed)
     //@ts-ignore
     doc.addImage(companyLogo, "PNG", 5, 5, 30, 25);
@@ -145,13 +151,11 @@ export const generateMultiplePdf = (orderAray: any) => {
     doc.text(`Order Number: ${orderDetails.ref_no}`, 10, startY);
     // startY = startY+10;
     doc.text(`Order Date: ${new Date(orderDetails.inserted_at).toLocaleDateString()}`, 10, (startY += 5));
-    doc.text(`Delivery Date: ${orderDetails.delivery_date}`, 10, (startY += 5));
-    doc.addImage(qrCode, "JPG", 150, startY - 40, 50, 50);
     const rows: any = [];
 
     if (orderDetails.itemList) {
       orderDetails.itemList.forEach((obj: any) => {
-        let arr = [obj.name, `${obj.quantity}${obj.unit}`, obj.count, obj.price];
+        let arr = [obj.name, obj.delivery_date || "", `${obj.quantity}${obj.unit}`, obj.count, obj.price];
         rows.push(arr);
       });
     } else {
@@ -160,13 +164,14 @@ export const generateMultiplePdf = (orderAray: any) => {
       const price = orderDetails.price.split(",");
       const units = orderDetails.units.split(",");
       const counts = orderDetails.counts.split(",");
+      const deliveryDates = getDeliveryDates(orderDetails);
       product_names.forEach((item: any, i: number) => {
-        let arr = [item, `${quantity[i]}${units[i]}`, counts[i], price[i]];
+        let arr = [item, deliveryDates[i] || "", `${quantity[i]}${units[i]}`, counts[i], price[i]];
         rows.push(arr);
       });
     }
 
-    const invoiceData = [["Product Name", "Quantity", "Units", "Price"], ...rows];
+    const invoiceData = [["Product Name", "Delivery Date", "Quantity", "Units", "Price"], ...rows];
     // Calculate the total amount
     //@ts-ignore
     const totalAmount = orderDetails.total_price;

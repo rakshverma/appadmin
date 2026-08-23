@@ -25,6 +25,7 @@ import {
   CANCEL_ORDERS,
   CANCEL_ORDER_ITEM,
   COMPLETE_ORDERS,
+  PROCESS_ORDERS,
   UPDATE_ADMIN_NOTES,
   UPDATE_DELIVERY_DATE,
 } from "../actionTypes";
@@ -287,6 +288,32 @@ function* completeOrderItemSaga(action: any): any {
   }
 }
 
+function* processOrderItemSaga(action: any): any {
+  try {
+    yield put({ type: SHOW_LOADER });
+    yield call(request, "put", `/orders/processOrderItems`, action.payload);
+    let { orderList } = yield select((state) => state.order);
+
+    action.payload.forEach((item: any) => {
+      orderList.forEach((obj: any) => {
+        if (Number(item) === Number(obj.id)) {
+          obj.status = 1;
+          const delivery_status = obj.delivery_status.split(",");
+          obj.delivery_status = delivery_status.map(() => 1).toString();
+          obj.delevery_boy_id = null;
+        }
+      });
+    });
+    yield put({ type: SET_ORDERS_LIST, payload: orderList });
+    yield put({ type: SHOW_SUCCESS_MESSAGE, payload: "Orders moved to processing successfully" });
+    yield put({ type: HIDE_LOADER });
+  } catch (e: any) {
+    const errMsg = e?.response?.data?.message || "Please try again.";
+    yield put({ type: HIDE_LOADER });
+    yield put({ type: SHOW_ERROR_MESSAGE, payload: errMsg });
+  }
+}
+
 function* updateAdminNotesOnIdSaga(action: any): any {
   try {
     yield put({ type: SHOW_LOADER });
@@ -354,6 +381,7 @@ export function* watchOrder() {
   yield takeLatest(CANCEL_ORDERS, cancelOrderItemsSaga);
   yield takeLatest(CANCEL_ORDER_ITEM, cancelOrderItemSaga);
   yield takeLatest(COMPLETE_ORDERS, completeOrderItemSaga);
+  yield takeLatest(PROCESS_ORDERS, processOrderItemSaga);
   yield takeLatest(UPDATE_ADMIN_NOTES, updateAdminNotesOnIdSaga);
   yield takeLatest(UPDATE_DELIVERY_DATE, updateDeliveryDateOnOrderIdSaga);
 }

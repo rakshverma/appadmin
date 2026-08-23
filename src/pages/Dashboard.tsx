@@ -12,6 +12,7 @@ import {
   getOrderListOnFranchiseId,
   cancelOrdersAction,
   completeOrdersAction,
+  processOrdersAction,
 } from "../store/actions/orderAction";
 import { getProductListAction } from "./../store/actions/productAction";
 import OrderListCard from "../components/Orders/OrderListCard";
@@ -220,6 +221,11 @@ function Dashboard() {
     dispatch(completeOrdersAction(list));
   };
 
+  const handleProcessOrder = (list: any) => {
+    if (!list.length) return;
+    dispatch(processOrdersAction(list));
+  };
+
   console.log("franchiseList = ", franchiseList);
   const quickActions = userInfo?.role_id === 1 ? adminQuickActions : franchiseQuickActions;
 
@@ -298,6 +304,7 @@ function Dashboard() {
               franchiseList={franchiseList}
               handleCancelOrder={handleCancelOrder}
               handleCompleteOrder={handleCompleteOrder}
+              handleProcessOrder={handleProcessOrder}
             />
           </>
         )}

@@ -3,7 +3,18 @@ import { Link } from "react-router-dom";
 import Button from "../Button";
 
 function ListingCardHeadings(props: any) {
-  const { heading, button, onClick, changePassword, assignButtonText, onAssignButtonClick, updateShippingCost, onStatusButtonClick } = props;
+  const {
+    heading,
+    button,
+    onClick,
+    changePassword,
+    assignButtonText,
+    onAssignButtonClick,
+    updateShippingCost,
+    onStatusButtonClick,
+    processButtonText,
+    onProcessButtonClick,
+  } = props;
   return (
     <div className="row mb-3">
       <div className="col-sm-7 my-auto">
@@ -28,6 +39,16 @@ function ListingCardHeadings(props: any) {
                 label={assignButtonText}
                 onClick={onAssignButtonClick}
                 className={"btn-dark btn-sm btn-rounded waves-effect waves-light"}
+              />
+            </div>
+          )}
+          {onProcessButtonClick && (
+            <div className="text-sm-end my-auto" style={{ marginRight: 10 }}>
+              <Button
+                type="button"
+                label={processButtonText || "Process Orders"}
+                onClick={onProcessButtonClick}
+                className={"btn-success btn-sm btn-rounded waves-effect waves-light"}
               />
             </div>
           )}
