@@ -18,6 +18,7 @@ import { getProductListAction } from "./../store/actions/productAction";
 import OrderListCard from "../components/Orders/OrderListCard";
 import { convertDateToLocal } from "./../utils/common";
 import generatePdf, { generateMultiplePdf } from "./../utils/generatePdf";
+import generateOrderSummary from "../utils/generateOrderSummary";
 import { SET_ORDERS_LIST } from "./../store/actionTypes";
 
 const { dashboardHeading, orderListHeading, assignDeleveyBoy, downloadInvoiceText } = constants;
@@ -226,6 +227,11 @@ function Dashboard() {
     dispatch(processOrdersAction(list));
   };
 
+  const handleGenerateSummary = (list: any) => {
+    if (!list.length) return;
+    generateOrderSummary(list);
+  };
+
   console.log("franchiseList = ", franchiseList);
   const quickActions = userInfo?.role_id === 1 ? adminQuickActions : franchiseQuickActions;
 
@@ -305,6 +311,7 @@ function Dashboard() {
               handleCancelOrder={handleCancelOrder}
               handleCompleteOrder={handleCompleteOrder}
               handleProcessOrder={handleProcessOrder}
+              handleGenerateSummary={handleGenerateSummary}
             />
           </>
         )}

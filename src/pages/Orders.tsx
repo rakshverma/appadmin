@@ -14,6 +14,7 @@ import OrderListCard from "../components/Orders/OrderListCard";
 import BreadCrumb from "../components/BreadCrumb";
 import { SET_ORDERS_LIST } from "./../store/actionTypes";
 import generatePdf, { generateMultiplePdf } from "./../utils/generatePdf";
+import generateOrderSummary from "../utils/generateOrderSummary";
 const { orderPageheading, orderListHeading, assignDeleveyBoy, downloadInvoiceText } = constants;
 const breadCrumb = [{ to: "order/list", name: "Orders" }];
 const tabs = [
@@ -119,6 +120,11 @@ function Orders() {
     dispatch(processOrdersAction(list));
   };
 
+  const handleGenerateSummary = (list: any) => {
+    if (!list.length) return;
+    generateOrderSummary(list);
+  };
+
   return (
     <div className="container-fluid" style={{ marginBottom: 100 + "px" }}>
       <BreadCrumb pageHeading={orderPageheading} breadCrumb={breadCrumb} />
@@ -139,6 +145,7 @@ function Orders() {
         handleCancelOrder={handleCancelOrder}
         handleCompleteOrder={handleCompleteOrder}
         handleProcessOrder={handleProcessOrder}
+        handleGenerateSummary={handleGenerateSummary}
       />
     </div>
   );

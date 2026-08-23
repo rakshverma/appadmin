@@ -14,6 +14,8 @@ function ListingCardHeadings(props: any) {
     onStatusButtonClick,
     processButtonText,
     onProcessButtonClick,
+    summaryButtonText,
+    onSummaryButtonClick,
   } = props;
   return (
     <div className="row mb-3">
@@ -49,6 +51,16 @@ function ListingCardHeadings(props: any) {
                 label={processButtonText || "Process Orders"}
                 onClick={onProcessButtonClick}
                 className={"btn-success btn-sm btn-rounded waves-effect waves-light"}
+              />
+            </div>
+          )}
+          {onSummaryButtonClick && (
+            <div className="text-sm-end my-auto" style={{ marginRight: 10 }}>
+              <Button
+                type="button"
+                label={summaryButtonText || "Generate Summary"}
+                onClick={onSummaryButtonClick}
+                className={"btn-info btn-sm btn-rounded waves-effect waves-light"}
               />
             </div>
           )}

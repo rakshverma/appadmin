@@ -20,6 +20,7 @@ function OrderListCard({
   handleCancelOrder,
   handleCompleteOrder,
   handleProcessOrder,
+  handleGenerateSummary,
 }: any) {
   console.log("orderListorderList = ", orderList);
   const dispatch = useDispatch();
@@ -79,6 +80,10 @@ function OrderListCard({
     setSelectedOrders([]);
   };
 
+  const onSummaryButtonClick = () => {
+    handleGenerateSummary(orderList);
+  };
+
   console.log("orderList = ", orderList);
 
   return (
@@ -99,6 +104,8 @@ function OrderListCard({
                 onStatusButtonClick={onStatusButtonClick}
                 processButtonText={"Process Orders"}
                 onProcessButtonClick={onProcessButtonClick}
+                summaryButtonText={"Generate Summary"}
+                onSummaryButtonClick={onSummaryButtonClick}
               />
               {checkboxError && <p style={{ textAlign: "right", color: "red" }}>{checkboxError}</p>}
               <div className="row">
