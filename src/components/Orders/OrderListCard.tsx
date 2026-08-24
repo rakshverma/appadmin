@@ -60,6 +60,15 @@ function OrderListCard({
     }
   };
 
+  const handleSelectAllOrders = (orderIds: any[]) => {
+    const allSelected = orderIds.length > 0 && orderIds.every((id: any) => selectedOrders.includes(id));
+    if (allSelected) {
+      setSelectedOrders(selectedOrders.filter((id: any) => !orderIds.includes(id)));
+      return;
+    }
+    setSelectedOrders([...selectedOrders, ...orderIds.filter((id: any) => !selectedOrders.includes(id))]);
+  };
+
   const onDownloadButtonClick = () => {
     onButtonClick(selectedOrders);
     setSelectedOrders([]);
@@ -133,6 +142,7 @@ function OrderListCard({
                           filterOrderByFranchise={filterOrderByFranchise}
                           selectedOrders={selectedOrders}
                           handleCheckboxSelect={handleCheckboxSelect}
+                          handleSelectAllOrders={handleSelectAllOrders}
                         />
                       </div>
                     )}
@@ -157,6 +167,7 @@ function OrderListCard({
                           filterOrderByFranchise={filterOrderByFranchise}
                           selectedOrders={selectedOrders}
                           handleCheckboxSelect={handleCheckboxSelect}
+                          handleSelectAllOrders={handleSelectAllOrders}
                         />
                       </div>
                     )}
@@ -172,6 +183,7 @@ function OrderListCard({
                           filterOrderByFranchise={filterOrderByFranchise}
                           selectedOrders={selectedOrders}
                           handleCheckboxSelect={handleCheckboxSelect}
+                          handleSelectAllOrders={handleSelectAllOrders}
                         />
                       </div>
                     )}

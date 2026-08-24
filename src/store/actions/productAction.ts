@@ -14,8 +14,8 @@ import {
 export const addProductAction = (data: any) => {
   return { type: ADD_PRODUCT, payload: data };
 };
-export const editProductAction = (data: any, productId: any, images: any) => {
-  return { type: EDIT_PRODUCT, payload: { data, productId, images } };
+export const editProductAction = (data: any, productId: any, retainedImages: any) => {
+  return { type: EDIT_PRODUCT, payload: { data, productId, retainedImages } };
 };
 export const getProductListAction = () => {
   return { type: GET_PRODUCT, payload: null };

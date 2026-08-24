@@ -31,11 +31,21 @@ function OrderTable({
   filterOrderByFranchise,
   selectedOrders,
   handleCheckboxSelect,
+  handleSelectAllOrders,
 }: any) {
+  const allVisibleSelected = orderList.length > 0 && orderList.every((order: any) => selectedOrders.includes(order.id));
   const columns = useMemo(
     () => [
       {
-        Header: "",
+        Header: () =>
+          handleCheckboxSelect ? (
+            <input
+              type="checkbox"
+              checked={allVisibleSelected}
+              onChange={() => handleSelectAllOrders(orderList.map((order: any) => order.id))}
+              title="Select all visible orders"
+            />
+          ) : null,
         accessor: "checkbox",
         Cell: (props: any): any => {
           return handleCheckboxSelect ? (
@@ -173,7 +183,7 @@ function OrderTable({
         },
       },
     ],
-    [selectedOrders]
+    [selectedOrders, orderList, allVisibleSelected, handleCheckboxSelect, handleSelectAllOrders, generateOrderPdf]
   );
   return (
     <Table columns={columns} data={orderList} franchiseList={franchiseList} fromScreen={"order"} filterOrderByFranchise={filterOrderByFranchise} />

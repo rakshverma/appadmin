@@ -68,15 +68,17 @@ function* addProductSaga(action: any): any {
 
 function* editProductSaga(action: any): any {
   try {
-    const { data, productId, images } = action.payload;
+    const { data, productId, retainedImages } = action.payload;
     const isPrivate = 1;
     const formData = new FormData();
-    for (let i = 0; i < data.images.length; i++) {
-      formData.append("files", data.images[i]);
+    const images = data.images || [];
+    for (let i = 0; i < images.length; i++) {
+      formData.append("files", images[i]);
     }
     formData.append("name", data.name);
     formData.append("category", data.category);
     formData.append("description", data.description);
+    formData.append("retainedImages", JSON.stringify(retainedImages || []));
     yield put({ type: SHOW_LOADER });
     yield put({ type: RESET_PRODUCT_FLAG });
     const method = "put";

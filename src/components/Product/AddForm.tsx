@@ -39,6 +39,8 @@ function AddForm({
   openCategoryModal,
   productId,
   editInfo,
+  retainedImages,
+  onRemoveImage,
 }: any) {
   const resetForm = () => {
     reset();
@@ -158,11 +160,20 @@ function AddForm({
                                 </div>
                               );
                             })
-                          : productId && editInfo?.length > 0
-                          ? JSON.parse(editInfo[0]?.images)?.map((item: any, k: number) => {
+                          : productId && retainedImages?.length > 0
+                          ? retainedImages?.map((item: any, k: number) => {
                               return (
-                                <div className="admin-image-thumb" key={`pei_${k}`}>
+                                <div className="admin-image-thumb" key={`pei_${k}`} style={{ position: "relative" }}>
                                   <img src={`${uploadUrl}${item}`} crossOrigin="anonymous" alt="" />
+                                  <button
+                                    type="button"
+                                    className="btn btn-danger btn-sm"
+                                    style={{ position: "absolute", top: 4, right: 4, padding: "1px 6px" }}
+                                    title="Remove image"
+                                    onClick={() => onRemoveImage(item)}
+                                  >
+                                    <i className="fas fa-times"></i>
+                                  </button>
                                 </div>
                               );
                             })

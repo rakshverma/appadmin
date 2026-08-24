@@ -29,6 +29,7 @@ function EditProduct() {
     setValue,
   } = useForm<ProductFormData>();
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+  const [retainedImages, setRetainedImages] = useState<string[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [editInfo, setEditInfo] = useState<any>([]);
   const [formData, setFormData] = useState({
@@ -72,7 +73,11 @@ function EditProduct() {
 
   const onSubmit = (data: ProductFormData) => {
     console.log(data);
-    dispatch(editProductAction(data, productId, editInfo[0].images));
+    dispatch(editProductAction(data, productId, retainedImages));
+  };
+
+  const removeImage = (image: string) => {
+    setRetainedImages((state) => state.filter((item) => item !== image));
   };
 
   const openCategoryModal = () => {
@@ -89,6 +94,7 @@ function EditProduct() {
     const product = productList.filter((item: any) => item.id == productId);
     if (product.length) {
       setEditInfo(product);
+      setRetainedImages(JSON.parse(product[0].images || "[]"));
       setValue("name", product[0].name);
       setValue("category", product[0].category_id);
       setValue("description", product[0].description);
@@ -118,6 +124,8 @@ function EditProduct() {
         openCategoryModal={openCategoryModal}
         productId={productId}
         editInfo={editInfo}
+        retainedImages={retainedImages}
+        onRemoveImage={removeImage}
       />
       {isOpen && <AddCategory isOpen={isOpen} closeModal={closeModal} />}
     </>
