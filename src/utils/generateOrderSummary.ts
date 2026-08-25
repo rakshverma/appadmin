@@ -18,6 +18,29 @@ const downloadCsv = (fileName: string, rows: any[][]) => {
   URL.revokeObjectURL(url);
 };
 
+const normalizeUnit = (unit: any) => `${unit || ""}`.trim().toLowerCase();
+
+const getTotalQuantity = (quantity: number, count: number, unit: string) => {
+  const normalizedUnit = normalizeUnit(unit);
+  const total = quantity * count;
+  if (normalizedUnit === "kg") return { key: "kg", value: total };
+  if (normalizedUnit === "gm" || normalizedUnit === "g" || normalizedUnit === "gram") return { key: "kg", value: total / 1000 };
+  if (normalizedUnit === "piece(s)" || normalizedUnit === "piece" || normalizedUnit === "pieces") return { key: "piece(s)", value: total };
+  if (normalizedUnit === "plate(s)" || normalizedUnit === "plate" || normalizedUnit === "plates") return { key: "plate(s)", value: total };
+  return { key: normalizedUnit || "unit", value: total };
+};
+
+const addQuantityTotal = (totals: any, quantity: any) => {
+  totals[quantity.key] = Number(totals[quantity.key] || 0) + quantity.value;
+};
+
+const formatQuantityTotals = (totals: any) => {
+  return Object.keys(totals)
+    .filter((key) => Number(totals[key]) > 0)
+    .map((key) => `${Number(totals[key]).toFixed(key === "kg" ? 2 : 0)} ${key}`)
+    .join(" + ");
+};
+
 const buildOrderRows = (order: any) => {
   const productNames = splitList(order.product_names);
   const quantities = splitList(order.quantity);
@@ -31,7 +54,7 @@ const buildOrderRows = (order: any) => {
       const unitPrice = Number(prices[index] || 0);
       const count = Number(counts[index] || 0);
       const quantity = Number(quantities[index] || 0);
-      const totalQuantity = quantity * count;
+      const totalQuantity = getTotalQuantity(quantity, count, units[index] || "");
       const itemTotal = unitPrice * count;
 
       return {
@@ -46,6 +69,7 @@ const buildOrderRows = (order: any) => {
         count,
         unitPrice,
         totalQuantity,
+        totalQuantityLabel: formatQuantityTotals({ [totalQuantity.key]: totalQuantity.value }),
         itemTotal,
       };
     })
@@ -65,22 +89,24 @@ const generateOrderSummary = (orderList: any[]) => {
       "Unit",
       "Count",
       "Unit Price",
+      "Shipping Charges",
       "Total Quantity",
       "Total Money",
     ],
   ];
 
-  let grandTotalQuantity = 0;
+  const grandTotalQuantity: any = {};
   let grandTotalMoney = 0;
 
   orderList.forEach((order: any) => {
     const orderRows = buildOrderRows(order);
-    let orderTotalQuantity = 0;
-    let orderTotalMoney = 0;
+    const orderTotalQuantity: any = {};
+    let orderItemsTotalMoney = 0;
+    const shippingCost = Number(order.shipping_cost || 0);
 
     orderRows.forEach((row: any) => {
-      orderTotalQuantity += row.totalQuantity;
-      orderTotalMoney += row.itemTotal;
+      addQuantityTotal(orderTotalQuantity, row.totalQuantity);
+      orderItemsTotalMoney += row.itemTotal;
       rows.push([
         row.orderNo,
         row.customer,
@@ -92,13 +118,14 @@ const generateOrderSummary = (orderList: any[]) => {
         row.unit,
         row.count,
         row.unitPrice.toFixed(2),
-        row.totalQuantity.toFixed(2),
+        "",
+        row.totalQuantityLabel,
         row.itemTotal.toFixed(2),
       ]);
     });
 
-    grandTotalQuantity += orderTotalQuantity;
-    grandTotalMoney += orderTotalMoney;
+    Object.keys(orderTotalQuantity).forEach((key) => addQuantityTotal(grandTotalQuantity, { key, value: orderTotalQuantity[key] }));
+    grandTotalMoney += orderItemsTotalMoney + shippingCost;
     rows.push([
       order.ref_no,
       "Order Total",
@@ -110,12 +137,27 @@ const generateOrderSummary = (orderList: any[]) => {
       "",
       "",
       "",
-      orderTotalQuantity.toFixed(2),
-      orderTotalMoney.toFixed(2),
+      shippingCost.toFixed(2),
+      formatQuantityTotals(orderTotalQuantity),
+      (orderItemsTotalMoney + shippingCost).toFixed(2),
     ]);
   });
 
-  rows.push(["All Orders Total", "", "", "", "", "", "", "", "", "", grandTotalQuantity.toFixed(2), grandTotalMoney.toFixed(2)]);
+  rows.push([
+    "All Orders Total",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    formatQuantityTotals(grandTotalQuantity),
+    grandTotalMoney.toFixed(2),
+  ]);
 
   downloadCsv(`order-summary-${new Date().toISOString().slice(0, 10)}.csv`, rows);
 };

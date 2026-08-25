@@ -30,7 +30,7 @@ function PriceForm({
   };
 
   const validateUnit = (value: string) => {
-    return value === "kg" || value === "gm" || value === " piece(s)" || "Please select a valid unit";
+    return value === "kg" || value === "gm" || value === "piece(s)" || value === "plate(s)" || "Please select a valid unit";
   };
 
   return (
@@ -191,7 +191,8 @@ function PriceForm({
                               >
                                 <option value="kg">kg</option>
                                 <option value="gm">gm</option>
-                                <option value=" piece(s)">piece(s)</option>
+                                <option value="piece(s)">piece(s)</option>
+                                <option value="plate(s)">plate(s)</option>
                               </select>
                             </div>
                           </div>
