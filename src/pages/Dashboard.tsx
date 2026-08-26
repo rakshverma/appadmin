@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import moment from "moment";
@@ -89,6 +89,8 @@ const franchiseQuickActions = [
     icon: "fa-map-marker-alt",
   },
 ];
+
+const getFranchiseName = (order: any) => order.franchise_name || order.franchise || "Unassigned";
 
 function Dashboard() {
   const dispatch = useDispatch();
@@ -234,6 +236,18 @@ function Dashboard() {
 
   console.log("franchiseList = ", franchiseList);
   const quickActions = userInfo?.role_id === 1 ? adminQuickActions : franchiseQuickActions;
+  const franchiseOrderCounts = useMemo(() => {
+    const counts = orderList.reduce((acc: any, order: any) => {
+      const name = getFranchiseName(order);
+      acc[name] = acc[name] || { franchise: name, processing: 0, completed: 0, canceled: 0 };
+      if (Number(order.status) === 1) acc[name].processing += 1;
+      if (Number(order.status) === 2) acc[name].completed += 1;
+      if (Number(order.status) === 3) acc[name].canceled += 1;
+      return acc;
+    }, {});
+
+    return Object.values(counts).sort((a: any, b: any) => a.franchise.localeCompare(b.franchise));
+  }, [orderList]);
 
   return (
     <>
@@ -294,6 +308,42 @@ function Dashboard() {
               <div>
                 <strong>Suggested flow</strong>
                 <span>Add categories, add products, create franchise/pincode mappings, set product prices, then review orders.</span>
+              </div>
+            </div>
+            <div className="card">
+              <div className="card-body">
+                <div className="mb-3 d-flex align-items-center justify-content-between">
+                  <h4 className="card-title mb-0">Franchise Order Counts</h4>
+                </div>
+                <div className="table-responsive">
+                  <table className="table align-middle mb-0">
+                    <thead className="table-light">
+                      <tr>
+                        <th>Franchise</th>
+                        <th>Under Processing</th>
+                        <th>Completed</th>
+                        <th>Canceled</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {franchiseOrderCounts.length === 0 && (
+                        <tr>
+                          <td colSpan={4} className="text-center">
+                            No orders found
+                          </td>
+                        </tr>
+                      )}
+                      {franchiseOrderCounts.map((item: any) => (
+                        <tr key={item.franchise}>
+                          <td>{item.franchise}</td>
+                          <td>{item.processing}</td>
+                          <td>{item.completed}</td>
+                          <td>{item.canceled}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
             <OrderListCard

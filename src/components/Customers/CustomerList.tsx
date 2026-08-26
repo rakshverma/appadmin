@@ -1,7 +1,6 @@
-import React, { useMemo, useEffect } from "react";
+import React, { useMemo } from "react";
 import { Link } from "react-router-dom";
 import Table from "../Table";
-import { convertDateToLocal } from "../../utils/common";
 
 function CustomerList({ customerList, onClickDelete }: any) {
   const columns = useMemo(
@@ -13,6 +12,10 @@ function CustomerList({ customerList, onClickDelete }: any) {
       {
         Header: "Phone",
         accessor: "phone_number",
+      },
+      {
+        Header: "Pincode",
+        accessor: "pin_code",
       },
       {
         Header: "Address",
