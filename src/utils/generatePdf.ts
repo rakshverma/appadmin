@@ -1,4 +1,3 @@
-import React, { useRef } from "react";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 const baseUrl = window.location.origin;
@@ -11,14 +10,35 @@ const getDeliveryDates = (orderDetails: any) => {
   return `${orderDetails.delivery_date || ""}`.split(",");
 };
 
+const getOrderRows = (orderDetails: any, includePrice = true) => {
+  const rows: any = [];
+
+  if (orderDetails.itemList) {
+    orderDetails.itemList.forEach((obj: any) => {
+      const row = [obj.name, obj.delivery_date || "", `${obj.quantity}${obj.unit}`, obj.count];
+      rows.push(includePrice ? [...row, obj.price] : row);
+    });
+    return rows;
+  }
+
+  const product_names = `${orderDetails.product_names || ""}`.split(",");
+  const quantity = `${orderDetails.quantity || ""}`.split(",");
+  const price = `${orderDetails.price || ""}`.split(",");
+  const units = `${orderDetails.units || ""}`.split(",");
+  const counts = `${orderDetails.counts || ""}`.split(",");
+  const deliveryDates = getDeliveryDates(orderDetails);
+  product_names.forEach((item: any, i: number) => {
+    const row = [item, deliveryDates[i] || "", `${quantity[i]}${units[i]}`, counts[i]];
+    rows.push(includePrice ? [...row, price[i]] : row);
+  });
+
+  return rows;
+};
+
+const getPrintableAddress = (orderDetails: any) => `${orderDetails.shipping_address || ""}`.split(",").map((item) => item.trim()).filter(Boolean);
+
 const generatePdf = (orderDetails: any) => {
   console.log("orderDetails = ", orderDetails);
-  const options = {
-    orientation: "portrait", // or 'landscape'
-    unit: "mm",
-    format: "a4",
-  };
-
   const doc = new jsPDF();
 
   // Set the document properties (optional)
@@ -46,25 +66,7 @@ const generatePdf = (orderDetails: any) => {
   doc.text(`Order Number: ${orderDetails.ref_no}`, 10, startY);
   // startY = startY+10;
   doc.text(`Order Date: ${new Date(orderDetails.inserted_at).toLocaleDateString()}`, 10, (startY += 10));
-  const rows: any = [];
-
-  if (orderDetails.itemList) {
-    orderDetails.itemList.forEach((obj: any) => {
-      let arr = [obj.name, obj.delivery_date || "", `${obj.quantity}${obj.unit}`, obj.count, obj.price];
-      rows.push(arr);
-    });
-  } else {
-    const product_names = orderDetails.product_names.split(",");
-    const quantity = orderDetails.quantity.split(",");
-    const price = orderDetails.price.split(",");
-    const units = orderDetails.units.split(",");
-    const counts = orderDetails.counts.split(",");
-    const deliveryDates = getDeliveryDates(orderDetails);
-    product_names.forEach((item: any, i: number) => {
-      let arr = [item, deliveryDates[i] || "", `${quantity[i]}${units[i]}`, counts[i], price[i]];
-      rows.push(arr);
-    });
-  }
+  const rows = getOrderRows(orderDetails);
 
   const invoiceData = [["Product Name", "Delivery Date", "Quantity", "Units", "Price"], ...rows];
   // Calculate the total amount
@@ -89,12 +91,12 @@ const generatePdf = (orderDetails: any) => {
   doc.text(`Sub Total: ${totalAmount - shippingCost}`, 140, (startY += 10));
   doc.text(`Shipping Cost: ${shippingCost}`, 140, (startY += 5));
   doc.text(`Total: ${totalAmount}`, 140, (startY += 5));
-  const address = orderDetails.shipping_address.split(",");
+  const address = getPrintableAddress(orderDetails);
   // Name, Shipping Address, Date, and Signature
   doc.setFontSize(12);
   doc.text(`Name: ${orderDetails.name}`, 10, (startY += 10));
   doc.text("Shipping Address:", 10, (startY += 5));
-  address.map((item: any) => {
+  address.forEach((item: any) => {
     doc.text(item ? item.trim() : "", 10, (startY += 5));
   });
   doc.text(`Landmark: ${orderDetails.landmark}`, 10, (startY += 5));
@@ -114,12 +116,6 @@ const generatePdf = (orderDetails: any) => {
 
 export const generateMultiplePdf = (orderAray: any) => {
   console.log("orderAray = ", orderAray);
-  const options = {
-    orientation: "portrait", // or 'landscape'
-    unit: "mm",
-    format: "a4",
-  };
-
   const doc = new jsPDF();
 
   orderAray.forEach((orderDetails: any, index: number) => {
@@ -151,25 +147,7 @@ export const generateMultiplePdf = (orderAray: any) => {
     doc.text(`Order Number: ${orderDetails.ref_no}`, 10, startY);
     // startY = startY+10;
     doc.text(`Order Date: ${new Date(orderDetails.inserted_at).toLocaleDateString()}`, 10, (startY += 5));
-    const rows: any = [];
-
-    if (orderDetails.itemList) {
-      orderDetails.itemList.forEach((obj: any) => {
-        let arr = [obj.name, obj.delivery_date || "", `${obj.quantity}${obj.unit}`, obj.count, obj.price];
-        rows.push(arr);
-      });
-    } else {
-      const product_names = orderDetails.product_names.split(",");
-      const quantity = orderDetails.quantity.split(",");
-      const price = orderDetails.price.split(",");
-      const units = orderDetails.units.split(",");
-      const counts = orderDetails.counts.split(",");
-      const deliveryDates = getDeliveryDates(orderDetails);
-      product_names.forEach((item: any, i: number) => {
-        let arr = [item, deliveryDates[i] || "", `${quantity[i]}${units[i]}`, counts[i], price[i]];
-        rows.push(arr);
-      });
-    }
+    const rows = getOrderRows(orderDetails);
 
     const invoiceData = [["Product Name", "Delivery Date", "Quantity", "Units", "Price"], ...rows];
     // Calculate the total amount
@@ -194,13 +172,13 @@ export const generateMultiplePdf = (orderAray: any) => {
     doc.text(`Sub Total: ${totalAmount - shippingCost}`, 140, (startY += 10));
     doc.text(`Shipping Cost: ${shippingCost}`, 140, (startY += 5));
     doc.text(`Total: ${totalAmount}`, 140, (startY += 5));
-    const address = orderDetails.shipping_address.split(",");
+    const address = getPrintableAddress(orderDetails);
     // Name, Shipping Address, Date, and Signature
     doc.setFontSize(10);
     doc.text(`Name: ${orderDetails.name}`, 10, (startY += 10));
     doc.text(`Phone Number: ${orderDetails.phone_number}`, 10, (startY += 5));
     doc.text("Shipping Address:", 10, (startY += 5));
-    address.map((item: any) => {
+    address.forEach((item: any) => {
       doc.text(item ? item.trim() : "", 10, (startY += 5));
     });
     doc.text(`Landmark: ${orderDetails.landmark}`, 10, (startY += 5));
@@ -217,6 +195,86 @@ export const generateMultiplePdf = (orderAray: any) => {
 
   // Save or display the PDF
   doc.save(`invoices.pdf`);
+};
+
+export const printThermalInvoices = (orderArray: any[]) => {
+  if (!orderArray.length) return;
+
+  const invoiceHtml = orderArray
+    .map((orderDetails: any) => {
+      const rows = getOrderRows(orderDetails, false);
+      const address = getPrintableAddress(orderDetails);
+      return `
+        <section class="receipt">
+          <h1>JhatkaByte</h1>
+          <h2>Kitchen Invoice</h2>
+          <p>Order: ${orderDetails.ref_no}</p>
+          <p>Date: ${new Date(orderDetails.inserted_at).toLocaleDateString()}</p>
+          <p>Name: ${orderDetails.name || ""}</p>
+          <p>Phone: ${orderDetails.phone_number || ""}</p>
+          <table>
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Date</th>
+                <th>Qty</th>
+                <th>No.</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${rows
+                .map(
+                  (row: any) => `
+                    <tr>
+                      <td>${row[0] || ""}</td>
+                      <td>${row[1] || ""}</td>
+                      <td>${row[2] || ""}</td>
+                      <td>${row[3] || ""}</td>
+                    </tr>
+                  `
+                )
+                .join("")}
+            </tbody>
+          </table>
+          <p>Address:</p>
+          ${address.map((line) => `<p>${line}</p>`).join("")}
+          <p>Landmark: ${orderDetails.landmark || "----"}</p>
+          <p>User Notes: ${orderDetails.additional_notes || "----"}</p>
+          <p>Delivery Notes: ${orderDetails.admin_notes || "----"}</p>
+        </section>
+      `;
+    })
+    .join("");
+
+  const printWindow = window.open("", "_blank", "width=420,height=640");
+  if (!printWindow) return;
+  printWindow.document.write(`
+    <!doctype html>
+    <html>
+      <head>
+        <title>Thermal Invoices</title>
+        <style>
+          @page { size: 80mm auto; margin: 4mm; }
+          body { font-family: Arial, sans-serif; font-size: 11px; margin: 0; color: #000; }
+          .receipt { break-after: page; page-break-after: always; width: 72mm; }
+          .receipt:last-child { break-after: auto; page-break-after: auto; }
+          h1, h2, p { margin: 0 0 5px; }
+          h1 { font-size: 18px; text-align: center; }
+          h2 { font-size: 13px; text-align: center; }
+          table { width: 100%; border-collapse: collapse; margin: 8px 0; }
+          th, td { border-top: 1px dashed #000; padding: 4px 2px; text-align: left; vertical-align: top; }
+          th:nth-child(1), td:nth-child(1) { width: 36%; }
+          th:nth-child(2), td:nth-child(2) { width: 28%; }
+          th:nth-child(3), td:nth-child(3) { width: 22%; }
+          th:nth-child(4), td:nth-child(4) { width: 14%; text-align: right; }
+        </style>
+      </head>
+      <body>${invoiceHtml}</body>
+    </html>
+  `);
+  printWindow.document.close();
+  printWindow.focus();
+  printWindow.print();
 };
 
 export default generatePdf;

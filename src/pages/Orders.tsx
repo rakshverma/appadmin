@@ -13,7 +13,7 @@ import { getProductListAction } from "../store/actions/productAction";
 import OrderListCard from "../components/Orders/OrderListCard";
 import BreadCrumb from "../components/BreadCrumb";
 import { SET_ORDERS_LIST } from "./../store/actionTypes";
-import generatePdf, { generateMultiplePdf } from "./../utils/generatePdf";
+import generatePdf, { generateMultiplePdf, printThermalInvoices } from "./../utils/generatePdf";
 import generateOrderSummary from "../utils/generateOrderSummary";
 const { orderPageheading, orderListHeading, assignDeleveyBoy, downloadInvoiceText } = constants;
 const breadCrumb = [{ to: "order/list", name: "Orders" }];
@@ -125,6 +125,11 @@ function Orders() {
     generateOrderSummary(list);
   };
 
+  const handleThermalPrint = (orderIds: any) => {
+    const orders = orderIds.length ? orderList.filter((order: any) => orderIds.includes(order.id)) : [];
+    printThermalInvoices(orders);
+  };
+
   return (
     <div className="container-fluid" style={{ marginBottom: 100 + "px" }}>
       <BreadCrumb pageHeading={orderPageheading} breadCrumb={breadCrumb} />
@@ -146,6 +151,7 @@ function Orders() {
         handleCompleteOrder={handleCompleteOrder}
         handleProcessOrder={handleProcessOrder}
         handleGenerateSummary={handleGenerateSummary}
+        handleThermalPrint={handleThermalPrint}
       />
     </div>
   );

@@ -21,6 +21,7 @@ function OrderListCard({
   handleCompleteOrder,
   handleProcessOrder,
   handleGenerateSummary,
+  handleThermalPrint,
 }: any) {
   console.log("orderListorderList = ", orderList);
   const dispatch = useDispatch();
@@ -93,6 +94,11 @@ function OrderListCard({
     handleGenerateSummary(orderList);
   };
 
+  const onThermalButtonClick = () => {
+    handleThermalPrint(selectedOrders);
+    setSelectedOrders([]);
+  };
+
   console.log("orderList = ", orderList);
 
   return (
@@ -115,6 +121,8 @@ function OrderListCard({
                 onProcessButtonClick={onProcessButtonClick}
                 summaryButtonText={"Generate Summary"}
                 onSummaryButtonClick={onSummaryButtonClick}
+                thermalButtonText={"Thermal Print"}
+                onThermalButtonClick={onThermalButtonClick}
               />
               {checkboxError && <p style={{ textAlign: "right", color: "red" }}>{checkboxError}</p>}
               <div className="row">
@@ -143,6 +151,7 @@ function OrderListCard({
                           selectedOrders={selectedOrders}
                           handleCheckboxSelect={handleCheckboxSelect}
                           handleSelectAllOrders={handleSelectAllOrders}
+                          handleThermalPrint={handleThermalPrint}
                         />
                       </div>
                     )}
@@ -168,6 +177,7 @@ function OrderListCard({
                           selectedOrders={selectedOrders}
                           handleCheckboxSelect={handleCheckboxSelect}
                           handleSelectAllOrders={handleSelectAllOrders}
+                          handleThermalPrint={handleThermalPrint}
                         />
                       </div>
                     )}
@@ -184,6 +194,7 @@ function OrderListCard({
                           selectedOrders={selectedOrders}
                           handleCheckboxSelect={handleCheckboxSelect}
                           handleSelectAllOrders={handleSelectAllOrders}
+                          handleThermalPrint={handleThermalPrint}
                         />
                       </div>
                     )}

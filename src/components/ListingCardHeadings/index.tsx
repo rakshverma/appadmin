@@ -16,6 +16,8 @@ function ListingCardHeadings(props: any) {
     onProcessButtonClick,
     summaryButtonText,
     onSummaryButtonClick,
+    thermalButtonText,
+    onThermalButtonClick,
   } = props;
   return (
     <div className="row mb-3">
@@ -61,6 +63,16 @@ function ListingCardHeadings(props: any) {
                 label={summaryButtonText || "Generate Summary"}
                 onClick={onSummaryButtonClick}
                 className={"btn-info btn-sm btn-rounded waves-effect waves-light"}
+              />
+            </div>
+          )}
+          {onThermalButtonClick && (
+            <div className="text-sm-end my-auto" style={{ marginRight: 10 }}>
+              <Button
+                type="button"
+                label={thermalButtonText || "Thermal Print"}
+                onClick={onThermalButtonClick}
+                className={"btn-secondary btn-sm btn-rounded waves-effect waves-light"}
               />
             </div>
           )}

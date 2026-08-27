@@ -32,6 +32,7 @@ function OrderTable({
   selectedOrders,
   handleCheckboxSelect,
   handleSelectAllOrders,
+  handleThermalPrint,
 }: any) {
   const allVisibleSelected = orderList.length > 0 && orderList.every((order: any) => selectedOrders.includes(order.id));
   const columns = useMemo(
@@ -163,6 +164,16 @@ function OrderTable({
                 <i className="fas fa-download"></i>
               </button>
 
+              {handleThermalPrint && (
+                <button
+                  className="btn btn-secondary btn-sm mt-2"
+                  onClick={() => handleThermalPrint([props.row.original.id])}
+                  title="Thermal print without prices"
+                >
+                  <i className="fas fa-print"></i>
+                </button>
+              )}
+
               {props.row.original.receipt_url && (
                 <a
                   href={getReceiptUrl(props.row.original.receipt_url)}
@@ -183,7 +194,7 @@ function OrderTable({
         },
       },
     ],
-    [selectedOrders, orderList, allVisibleSelected, handleCheckboxSelect, handleSelectAllOrders, generateOrderPdf]
+    [selectedOrders, orderList, allVisibleSelected, handleCheckboxSelect, handleSelectAllOrders, generateOrderPdf, handleThermalPrint]
   );
   return (
     <Table columns={columns} data={orderList} franchiseList={franchiseList} fromScreen={"order"} filterOrderByFranchise={filterOrderByFranchise} />

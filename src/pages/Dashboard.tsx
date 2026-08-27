@@ -17,7 +17,7 @@ import {
 import { getProductListAction } from "./../store/actions/productAction";
 import OrderListCard from "../components/Orders/OrderListCard";
 import { convertDateToLocal } from "./../utils/common";
-import generatePdf, { generateMultiplePdf } from "./../utils/generatePdf";
+import generatePdf, { generateMultiplePdf, printThermalInvoices } from "./../utils/generatePdf";
 import generateOrderSummary from "../utils/generateOrderSummary";
 import { SET_ORDERS_LIST } from "./../store/actionTypes";
 
@@ -129,13 +129,13 @@ function Dashboard() {
     let delivered = 0;
     let canceled = 0;
     orderList.forEach((itm: any) => {
-      if (itm.status === 1) {
+      if (Number(itm.status) === 1) {
         recent++;
       }
-      if (itm.status === 2) {
+      if (Number(itm.status) === 2) {
         delivered++;
       }
-      if (itm.status === 3) {
+      if (Number(itm.status) === 3) {
         canceled++;
       }
     });
@@ -232,6 +232,11 @@ function Dashboard() {
   const handleGenerateSummary = (list: any) => {
     if (!list.length) return;
     generateOrderSummary(list);
+  };
+
+  const handleThermalPrint = (orderIds: any) => {
+    const orders = orderIds.length ? orderList.filter((order: any) => orderIds.includes(order.id)) : [];
+    printThermalInvoices(orders);
   };
 
   console.log("franchiseList = ", franchiseList);
@@ -362,6 +367,7 @@ function Dashboard() {
               handleCompleteOrder={handleCompleteOrder}
               handleProcessOrder={handleProcessOrder}
               handleGenerateSummary={handleGenerateSummary}
+              handleThermalPrint={handleThermalPrint}
             />
           </>
         )}
