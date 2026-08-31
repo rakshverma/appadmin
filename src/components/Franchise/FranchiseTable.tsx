@@ -1,10 +1,10 @@
 import React, { useMemo } from "react";
 import { Link } from "react-router-dom";
 import Table from "../Table";
-import { convertDateToLocal } from "../../utils/common";
 
 function FranchiseTable({ franchiseList, onClickEdit, onClickDelete }: any) {
   console.log("franchiseListfranchiseList = ", franchiseList);
+  const getCount = (value: any) => Number(value || 0);
   const formatZipCodes = (zipCodes: any) => {
     if (!zipCodes) return "";
     if (Array.isArray(zipCodes)) return zipCodes.join(", ");
@@ -44,6 +44,20 @@ function FranchiseTable({ franchiseList, onClickEdit, onClickDelete }: any) {
               <br />
               {props.row.original.district} - {formatZipCodes(props.row.original.zip_codes)}
             </>
+          );
+        },
+      },
+      {
+        Header: "Orders",
+        accessor: "order_counts",
+        Cell: (props: any): any => {
+          const { processing_orders, completed_orders, canceled_orders } = props.row.original;
+          return (
+            <div className="d-flex flex-wrap gap-2">
+              <span className="badge bg-warning text-dark">Processing: {getCount(processing_orders)}</span>
+              <span className="badge bg-success">Completed: {getCount(completed_orders)}</span>
+              <span className="badge bg-danger">Canceled: {getCount(canceled_orders)}</span>
+            </div>
           );
         },
       },
