@@ -1,7 +1,6 @@
 import React, { useMemo } from "react";
 import { Link } from "react-router-dom";
 import Table from "../Table";
-import { ORDER_STATUS, ORDER_STATUS_BADGE_CLASS } from "../../utils/constants";
 import { convertDateToLocal } from "../../utils/common";
 import { DELIVERY_STATUS } from "../../utils/constants";
 import { uploadUrl } from "../../utils/axios";
@@ -60,13 +59,16 @@ function OrderTable({
       },
       {
         Header: "Customer",
-        accessor: "name",
+        id: "customer",
+        accessor: (row: any) => `${row.name || ""} ${row.phone_number || ""} ${row.email || ""}`,
         Cell: (props: any): any => {
           return (
             <>
-              {props.value}
+              {props.row.original.name}
               <br />
               {props.row.original.phone_number}
+              <br />
+              {props.row.original.email}
               <br />
               {props.row.original.shipping_address}
             </>
@@ -117,11 +119,12 @@ function OrderTable({
         Cell: (props: any): any => {
           const dates = props.row.original.delivery_status.split(",");
           return dates.map((item: any, i: number) => {
-            let index = item - 1;
+            const status = Number(item);
+            let index = status - 1;
             let color = "#111111";
-            if (item == 2) color = "#002aff";
-            if (item == 3) color = "#04fc00";
-            if (item == 4) color = "#fc0000";
+            if (status === 2) color = "#002aff";
+            if (status === 3) color = "#04fc00";
+            if (status === 4) color = "#fc0000";
             return (
               <div key={`item_${i}`} style={{ width: 100 }}>
                 <span style={{ color }}>{DELIVERY_STATUS[index]}</span>

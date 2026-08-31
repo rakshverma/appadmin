@@ -729,6 +729,33 @@ a:hover {
 }
 
 @media (max-width: 992px) {
+  #page-topbar {
+    min-height: 72px;
+    z-index: 1040;
+  }
+
+  .navbar-header {
+    height: 72px !important;
+    min-width: 0;
+    padding: 0 10px !important;
+  }
+
+  .navbar-header > .d-flex {
+    min-width: 0;
+  }
+
+  #vertical-menu-btn {
+    display: inline-flex;
+    flex: 0 0 44px;
+    align-items: center;
+    justify-content: center;
+    margin-left: 8px;
+    padding: 0 !important;
+    font-size: 16px;
+    position: relative;
+    z-index: 1042;
+  }
+
   .admin-login-page {
     padding: 18px;
   }
@@ -758,13 +785,18 @@ a:hover {
   body.sidebar-enable::before {
     content: "";
     position: fixed;
-    inset: 70px 0 0;
-    z-index: 1000;
+    inset: 72px 0 0;
+    z-index: 1030;
     background: rgba(15, 23, 42, 0.36);
   }
 
+  .vertical-menu {
+    top: 72px !important;
+    max-height: calc(100vh - 72px);
+  }
+
   body.sidebar-enable .vertical-menu {
-    z-index: 1002;
+    z-index: 1035;
     max-width: min(82vw, 280px);
     overflow-y: auto;
   }
@@ -783,12 +815,8 @@ a:hover {
     display: inline-block !important;
   }
 
-  .navbar-header {
-    padding: 0 10px;
-  }
-
   .page-content {
-    padding: 82px 12px 60px !important;
+    padding: 92px 12px 60px !important;
   }
 
   .card,
@@ -830,6 +858,61 @@ a:hover {
 }
 
 @media (max-width: 576px) {
+  #page-topbar,
+  .navbar-header {
+    min-height: 64px;
+  }
+
+  .navbar-header {
+    height: 64px !important;
+  }
+
+  .admin-brand-link {
+    height: 64px;
+  }
+
+  .logo {
+    line-height: 64px !important;
+  }
+
+  .navbar-brand-box {
+    min-width: 58px;
+    padding-left: 4px;
+    padding-right: 4px;
+  }
+
+  .logo-sm img {
+    height: 34px;
+  }
+
+  #vertical-menu-btn {
+    width: 40px;
+    height: 40px !important;
+    margin-left: 4px;
+  }
+
+  .header-item {
+    height: 64px !important;
+  }
+
+  .header-profile-user {
+    width: 34px !important;
+    height: 34px !important;
+  }
+
+  .vertical-menu {
+    top: 64px !important;
+    max-height: calc(100vh - 64px);
+  }
+
+  body.sidebar-enable::before {
+    inset: 64px 0 0;
+  }
+
+  .page-content {
+    padding-top: 84px !important;
+  }
+
   .admin-login-page {
     display: block;
     padding: 0;
