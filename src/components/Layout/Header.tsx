@@ -45,10 +45,10 @@ function Header() {
           <div className="d-flex">
             <div className="navbar-brand-box">
               <Link to="/dashboard" className="logo logo-light admin-brand-link">
-                <span className="logo-sm">
+                <span className="logo-sm admin-logo-sm">
                   <img src={logoPath} alt="JhatkaByte" height="40" />
                 </span>
-                <span className="logo-lg">
+                <span className="logo-lg admin-logo-lg">
                   <img src={logoPath} alt="JhatkaByte" height="50" />
                   <strong>Admin</strong>
                 </span>
