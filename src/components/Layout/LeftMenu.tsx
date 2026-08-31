@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import "./style.css";
 function LeftMenu() {
@@ -7,6 +7,8 @@ function LeftMenu() {
   const closeMobileMenu = () => {
     document.body.classList.remove("sidebar-enable");
   };
+  const navClassName = ({ isActive }: { isActive: boolean }) => `waves-effect${isActive ? " active" : ""}`;
+
   return (
     <div className="vertical-menu">
       <div data-simplebar="init" className="h-100">
@@ -22,39 +24,39 @@ function LeftMenu() {
                     <ul className="metismenu list-unstyled mm-show" id="side-menu">
                       <li className="menu-title">Menu</li>
                       <li>
-                        <Link to={"/dashboard"} className="waves-effect active" onClick={closeMobileMenu}>
+                        <NavLink to={"/dashboard"} end className={navClassName} onClick={closeMobileMenu}>
                           <i className="fa fa-home"></i>
                           <span>Dashboard</span>
-                        </Link>
+                        </NavLink>
                       </li>
                       {(userInfo?.role_id === 1 || userInfo?.role_id === 2) && (
                         <li>
-                          <Link to={"/order/list"} className="waves-effect" onClick={closeMobileMenu}>
+                          <NavLink to={"/order/list"} className={navClassName} onClick={closeMobileMenu}>
                             <i className="fa fa-shopping-cart"></i>
                             <span> Orders</span>
-                          </Link>
+                          </NavLink>
                         </li>
                       )}
 
                       {userInfo?.role_id === 1 && (
                         <>
                           <li>
-                            <Link to={"/customers/list"} className="waves-effect" onClick={closeMobileMenu}>
+                            <NavLink to={"/customers/list"} className={navClassName} onClick={closeMobileMenu}>
                               <i className="fa fa-users"></i>
                               <span> Customers</span>
-                            </Link>
+                            </NavLink>
                           </li>
                           <li>
-                            <Link to={"/franchise/list"} className="waves-effect" onClick={closeMobileMenu}>
+                            <NavLink to={"/franchise/list"} className={navClassName} onClick={closeMobileMenu}>
                               <i className="fa fa-user-tie"></i>
                               <span> Franchises</span>
-                            </Link>
+                            </NavLink>
                           </li>
                           <li>
-                            <Link to={"/revenue"} className="waves-effect" onClick={closeMobileMenu}>
+                            <NavLink to={"/revenue"} className={navClassName} onClick={closeMobileMenu}>
                               <i className="fa fa-rupee-sign"></i>
                               <span> Revenue</span>
-                            </Link>
+                            </NavLink>
                           </li>
                         </>
                       )}
@@ -62,26 +64,26 @@ function LeftMenu() {
 
                       {userInfo?.role_id === 1 && (
                         <li>
-                          <Link to={"/category/list"} className="waves-effect" onClick={closeMobileMenu}>
+                          <NavLink to={"/category/list"} className={navClassName} onClick={closeMobileMenu}>
                             <i className="fa fa-tags"></i>
                             <span> Categories</span>
-                          </Link>
+                          </NavLink>
                         </li>
                       )}
                       {(userInfo?.role_id === 1 || userInfo?.role_id === 2) && (
                         <>
                           <li>
-                            <Link to={"/product/list"} className="waves-effect" onClick={closeMobileMenu}>
+                            <NavLink to={"/product/list"} className={navClassName} onClick={closeMobileMenu}>
                               <i className="fa fa-boxes"></i>
                               <span> Products</span>
-                            </Link>
+                            </NavLink>
                           </li>
                           {userInfo?.role_id === 1 && (
                             <li>
-                              <Link to={"/product/add"} className="waves-effect" onClick={closeMobileMenu}>
+                              <NavLink to={"/product/add"} className={navClassName} onClick={closeMobileMenu}>
                                 <i className="fa fa-plus-circle"></i>
                                 <span> Add Product</span>
-                              </Link>
+                              </NavLink>
                             </li>
                           )}
                         </>
@@ -89,20 +91,20 @@ function LeftMenu() {
 
                       {userInfo?.role_id === 1 && (
                         <li>
-                          <Link to={"/product/reviews"} className="waves-effect" onClick={closeMobileMenu}>
+                          <NavLink to={"/product/reviews"} className={navClassName} onClick={closeMobileMenu}>
                             <i className="fa fa-pen-nib"></i>
                             <span> Product Review</span>
-                          </Link>
+                          </NavLink>
                         </li>
                       )}
                       {(userInfo?.role_id === 1 || userInfo?.role_id === 2) && (
                         <>
                           <li className="menu-title">Delivery Boy</li>
                           <li>
-                            <Link to={"/deleveryboy/list"} className="waves-effect" onClick={closeMobileMenu}>
+                            <NavLink to={"/deleveryboy/list"} className={navClassName} onClick={closeMobileMenu}>
                               <i className="fa fa-users-cog"></i>
                               <span> List of Delivery Boys</span>
-                            </Link>
+                            </NavLink>
                           </li>
                         </>
                       )}

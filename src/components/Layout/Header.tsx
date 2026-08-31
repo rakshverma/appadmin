@@ -6,7 +6,7 @@ import { getUserInfo, userLogoutAction } from "../../store/actions/userAction";
 function Header() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { userInfo, isError, logoutError } = useSelector((state: any) => state.user);
+  const { userInfo, isError } = useSelector((state: any) => state.user);
   const token = localStorage.getItem("token");
   const logoPath = `${process.env.PUBLIC_URL}/assets/imgs/jhatkabyte-logo.png`;
   const avatarPath = `${process.env.PUBLIC_URL}/assets/imgs/avatar.png`;
@@ -62,12 +62,6 @@ function Header() {
             >
               <i className="fa fa-fw fa-bars"></i>
             </button>
-            <form className="app-search d-none d-lg-block">
-              <div className="position-relative">
-                <input type="text" className="form-control" placeholder="Search Order ID..." />
-                <span className="bx bx-search-alt"></span>
-              </div>
-            </form>
           </div>
           <div className="d-flex">
             <div className="dropdown d-inline-block">
