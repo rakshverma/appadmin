@@ -46,10 +46,10 @@ function Header() {
             <div className="navbar-brand-box">
               <Link to="/dashboard" className="logo logo-light admin-brand-link">
                 <span className="logo-sm admin-logo-sm">
-                  <img src={logoPath} alt="JhatkaByte" height="40" />
+                  <span className="admin-logo-mark" role="img" aria-label="JhatkaByte" style={{ backgroundImage: `url(${logoPath})` }}></span>
                 </span>
                 <span className="logo-lg admin-logo-lg">
-                  <img src={logoPath} alt="JhatkaByte" height="50" />
+                  <span className="admin-logo-mark" role="img" aria-label="JhatkaByte" style={{ backgroundImage: `url(${logoPath})` }}></span>
                   <strong>Admin</strong>
                 </span>
               </Link>
