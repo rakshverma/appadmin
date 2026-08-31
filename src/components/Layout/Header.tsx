@@ -29,7 +29,13 @@ function Header() {
   };
 
   const toggleSidebar = () => {
+    if (window.innerWidth >= 993) {
+      document.body.classList.remove("sidebar-enable");
+      document.body.classList.remove("vertical-collpsed");
+      return;
+    }
     document.body.classList.toggle("sidebar-enable");
+    document.body.classList.remove("vertical-collpsed");
   };
 
   return (
@@ -50,8 +56,7 @@ function Header() {
             </div>
             <button
               type="button"
-              className="btn btn-sm px-3 font-size-16 header-item waves-effect"
-              id="vertical-menu-btn"
+              className="btn btn-sm px-3 font-size-16 header-item waves-effect admin-menu-toggle"
               aria-label="Toggle menu"
               onClick={toggleSidebar}
             >

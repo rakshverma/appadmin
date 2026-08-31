@@ -108,7 +108,7 @@ a:hover {
   color: #374151 !important;
 }
 
-#vertical-menu-btn {
+.admin-menu-toggle {
   width: 44px;
   height: 44px !important;
   align-self: center;
@@ -117,6 +117,33 @@ a:hover {
   background: var(--admin-surface-soft);
   border: 1px solid var(--admin-border);
   border-radius: 8px;
+}
+
+@media (min-width: 993px) {
+  .admin-menu-toggle {
+    display: none !important;
+  }
+
+  body.vertical-collpsed .navbar-brand-box {
+    width: 250px !important;
+  }
+
+  body.vertical-collpsed .logo span.logo-lg {
+    display: inline-flex !important;
+  }
+
+  body.vertical-collpsed .logo span.logo-sm {
+    display: none !important;
+  }
+
+  body.vertical-collpsed .vertical-menu {
+    width: 250px !important;
+    position: fixed;
+  }
+
+  body.vertical-collpsed .main-content {
+    margin-left: 250px !important;
+  }
 }
 
 .app-search .form-control {
@@ -744,7 +771,7 @@ a:hover {
     min-width: 0;
   }
 
-  #vertical-menu-btn {
+  .admin-menu-toggle {
     display: inline-flex;
     flex: 0 0 44px;
     align-items: center;
@@ -885,7 +912,7 @@ a:hover {
     height: 34px;
   }
 
-  #vertical-menu-btn {
+  .admin-menu-toggle {
     width: 40px;
     height: 40px !important;
     margin-left: 4px;
