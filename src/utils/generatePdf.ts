@@ -37,6 +37,36 @@ const getOrderRows = (orderDetails: any, includePrice = true) => {
 
 const getPrintableAddress = (orderDetails: any) => `${orderDetails.shipping_address || ""}`.split(",").map((item) => item.trim()).filter(Boolean);
 
+const escapeHtml = (value: any) =>
+  `${value || ""}`
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+
+const getThermalAddressLines = (orderDetails: any) => {
+  const address = getPrintableAddress(orderDetails).join(", ").replace(/\s+/g, " ").trim();
+  const words = address.split(" ").filter(Boolean);
+  const lines = [""];
+  const maxLineLength = 34;
+
+  words.forEach((word) => {
+    const currentLine = lines[lines.length - 1];
+    const nextLine = currentLine ? `${currentLine} ${word}` : word;
+    if (nextLine.length <= maxLineLength || lines.length === 2) {
+      lines[lines.length - 1] = nextLine;
+      return;
+    }
+    lines.push(word);
+  });
+
+  return lines.slice(0, 2).map((line, index) => {
+    if (index === 1 && line.length > maxLineLength) return `${line.slice(0, maxLineLength - 3)}...`;
+    return line || "----";
+  });
+};
+
 const generatePdf = (orderDetails: any) => {
   console.log("orderDetails = ", orderDetails);
   const doc = new jsPDF();
@@ -203,15 +233,15 @@ export const printThermalInvoices = (orderArray: any[]) => {
   const invoiceHtml = orderArray
     .map((orderDetails: any) => {
       const rows = getOrderRows(orderDetails, false);
-      const address = getPrintableAddress(orderDetails);
+      const address = getThermalAddressLines(orderDetails);
       return `
         <section class="receipt">
           <h1>JhatkaByte</h1>
           <h2>Kitchen Invoice</h2>
-          <p>Order: ${orderDetails.ref_no}</p>
+          <p>Order: ${escapeHtml(orderDetails.ref_no)}</p>
           <p>Date: ${new Date(orderDetails.inserted_at).toLocaleDateString()}</p>
-          <p>Name: ${orderDetails.name || ""}</p>
-          <p>Phone: ${orderDetails.phone_number || ""}</p>
+          <p>Name: ${escapeHtml(orderDetails.name)}</p>
+          <p>Phone: ${escapeHtml(orderDetails.phone_number)}</p>
           <table>
             <thead>
               <tr>
@@ -226,10 +256,10 @@ export const printThermalInvoices = (orderArray: any[]) => {
                 .map(
                   (row: any) => `
                     <tr>
-                      <td>${row[0] || ""}</td>
-                      <td>${row[1] || ""}</td>
-                      <td>${row[2] || ""}</td>
-                      <td>${row[3] || ""}</td>
+                      <td>${escapeHtml(row[0])}</td>
+                      <td>${escapeHtml(row[1])}</td>
+                      <td>${escapeHtml(row[2])}</td>
+                      <td>${escapeHtml(row[3])}</td>
                     </tr>
                   `
                 )
@@ -237,10 +267,10 @@ export const printThermalInvoices = (orderArray: any[]) => {
             </tbody>
           </table>
           <p>Address:</p>
-          ${address.map((line) => `<p>${line}</p>`).join("")}
-          <p>Landmark: ${orderDetails.landmark || "----"}</p>
-          <p>User Notes: ${orderDetails.additional_notes || "----"}</p>
-          <p>Delivery Notes: ${orderDetails.admin_notes || "----"}</p>
+          ${address.map((line) => `<p class="address-line">${escapeHtml(line)}</p>`).join("")}
+          <p>Landmark: ${escapeHtml(orderDetails.landmark || "----")}</p>
+          <p>User Notes: ${escapeHtml(orderDetails.additional_notes || "----")}</p>
+          <p>Delivery Notes: ${escapeHtml(orderDetails.admin_notes || "----")}</p>
         </section>
       `;
     })
@@ -261,6 +291,7 @@ export const printThermalInvoices = (orderArray: any[]) => {
           h1, h2, p { margin: 0 0 5px; }
           h1 { font-size: 18px; text-align: center; }
           h2 { font-size: 13px; text-align: center; }
+          .address-line { line-height: 1.25; overflow-wrap: anywhere; }
           table { width: 100%; border-collapse: collapse; margin: 8px 0; }
           th, td { border-top: 1px dashed #000; padding: 4px 2px; text-align: left; vertical-align: top; }
           th:nth-child(1), td:nth-child(1) { width: 36%; }
