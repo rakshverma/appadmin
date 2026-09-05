@@ -187,6 +187,28 @@ a:hover {
   box-shadow: 0 8px 20px rgba(17, 24, 39, 0.12);
 }
 
+.admin-topbar-logout {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  align-self: center;
+  height: 40px !important;
+  padding: 0 14px !important;
+  margin-right: 10px;
+  border: 1px solid rgba(219, 63, 36, 0.24) !important;
+  border-radius: 8px;
+  color: var(--admin-primary) !important;
+  background: rgba(219, 63, 36, 0.08) !important;
+  font-weight: 700;
+}
+
+.admin-topbar-logout:hover,
+.admin-topbar-logout:focus {
+  color: #ffffff !important;
+  background: var(--admin-primary) !important;
+}
+
 .vertical-menu {
   top: 72px !important;
   background: #111827 !important;
@@ -948,6 +970,16 @@ a:hover {
   .header-profile-user {
     width: 34px !important;
     height: 34px !important;
+  }
+
+  .admin-topbar-logout {
+    width: 40px;
+    padding: 0 !important;
+    margin-right: 4px;
+  }
+
+  .admin-topbar-logout span {
+    display: none;
   }
 
   .vertical-menu {

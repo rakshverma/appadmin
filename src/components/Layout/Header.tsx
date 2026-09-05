@@ -64,6 +64,14 @@ function Header() {
             </button>
           </div>
           <div className="d-flex">
+            <button
+              type="button"
+              className="btn admin-topbar-logout"
+              onClick={userLogout}
+            >
+              <i className="bx bx-power-off"></i>
+              <span>Logout</span>
+            </button>
             <div className="dropdown d-inline-block">
               <button
                 type="button"
