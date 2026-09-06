@@ -64,7 +64,6 @@ function UserProfile() {
   }, [dispatch]);
 
   useEffect(() => {
-    console.log("SET VALUE EFFECT CALLED");
     setValue("name", userInfo.name);
     setValue("phone", userInfo.phone_number);
     setValue("email", userInfo.email);
@@ -109,7 +108,6 @@ function UserProfile() {
   const handleCheckAll = (event: any) => {
     const { checked } = event.target;
     const checkboxArray = document.querySelectorAll('input[name="zipCodes"]');
-    console.log("checkboxArray = ", checkboxArray);
     const arr: any = [];
     checkboxArray.forEach((checkbox: any) => {
       checkbox.checked = checked;
@@ -122,12 +120,10 @@ function UserProfile() {
   };
 
   const validatePinCodes = (values: any) => {
-    console.log("valuesvalues = ", values);
     return values && values.length > 0;
   };
 
   const handleChange = (event: any) => {
-    console.log("event = ", event);
     // console.log("event.target.name = ", event.target.value);
     // setFormData({
     //   ...formData,
@@ -137,24 +133,18 @@ function UserProfile() {
 
   const handleDistrictChange = (e: any) => {
     const { value } = e.target;
-    console.log("DISTRICT = ", value);
-    console.log("userInfo?.district = ", value == userInfo?.district);
     dispatch(getPinCodeListOnDistrictAction(value));
     if (value === userInfo?.district) {
       const checkboxArray = document.querySelectorAll('input[name="zipCodes"]');
       const arr: any = [];
       const codes = parseZipCodes(userInfo.zip_codes);
-      console.log("codescodes = ", codes);
       checkboxArray.forEach((checkbox: any) => {
-        console.log("CHECKBOX = ", checkbox.value);
         if (codes.includes(checkbox.value)) {
-          console.log("CHECKEDDDDDD");
           checkbox.checked = true;
           arr.push(checkbox.value);
         }
       });
       if (arr.length > 0) clearErrors("zipCodes");
-      console.log("arrarr = ", arr);
       setValue("zipCodes", arr);
     } else {
       setValue("zipCodes", parseZipCodes(userInfo.zip_codes));
@@ -162,7 +152,6 @@ function UserProfile() {
   };
 
   const onSubmit = (data: any) => {
-    console.log(data);
     data.zipCodes = JSON.stringify(data.zipCodes);
     dispatch(editUserProfileAction(data));
   };
@@ -172,7 +161,6 @@ function UserProfile() {
   };
 
   const closeModal = () => {
-    console.log("closeModal = called");
     setIsOpen(false);
   };
 
@@ -181,7 +169,6 @@ function UserProfile() {
   };
 
   const watchCheckboxValues: any = watch("zipCodes");
-  console.log("watchCheckboxValues = ", watchCheckboxValues);
 
   // const allChecked = watchCheckboxValues.every((value: any) => value === true);
   // console.log("allChecked = ", allChecked);

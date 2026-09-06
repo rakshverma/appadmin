@@ -134,7 +134,6 @@ function AddFranchise() {
 
   const handleDistrictChange = (e: any) => {
     const { value } = e.target;
-    console.log("DISTRICT = ", value);
     dispatch(getPinCodeListOnDistrictAction(value));
   };
 

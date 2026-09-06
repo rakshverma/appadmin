@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import Table from "../Table";
 
 function FranchiseTable({ franchiseList, onClickEdit, onClickDelete }: any) {
-  console.log("franchiseListfranchiseList = ", franchiseList);
   const getCount = (value: any) => Number(value || 0);
   const formatZipCodes = (zipCodes: any) => {
     if (!zipCodes) return "";

@@ -27,7 +27,6 @@ const appReducer = combineReducers({
 });
 
 const rootReducer = (state: any, action: any) => {
-  console.log("action = ", action);
   if (action.type === "RESET_STORE") {
     return appReducer(undefined, action);
   }

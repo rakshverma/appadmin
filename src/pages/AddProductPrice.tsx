@@ -22,8 +22,6 @@ function AddProductPrice() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { editInfo, franchiseInfo, isError, isSuccess } = useSelector((state: any) => state.productPrice);
-  console.log("editInfo = ", editInfo);
-  console.log("editInfo = ", franchiseInfo);
   const [formData, setFormData] = useState({});
   const {
     register,
@@ -51,7 +49,6 @@ function AddProductPrice() {
   useEffect(() => {
     dispatch(getProductPriceEditInfo({ productId, distributerId }));
     return () => {
-      console.log("UNMOUNT PRODUCT EDIT CALLED");
       dispatch(resetProductListFlagsAction());
     };
   }, [dispatch, productId, distributerId]);
@@ -86,11 +83,9 @@ function AddProductPrice() {
   };
 
   const handleChange = (event: any) => {
-    console.log("event = ", event);
   };
 
   const onSubmit = (data: EditPriceFormProps) => {
-    console.log("Data = ", data, distributerId);
     dispatch(updateProductPriceAction(data, productId, distributerId));
   };
 

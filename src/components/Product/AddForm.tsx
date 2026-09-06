@@ -45,7 +45,6 @@ function AddForm({
   const resetForm = () => {
     reset();
   };
-  console.log("imagePreviews = ", imagePreviews);
   return (
     <>
       <div className="container-fluid">

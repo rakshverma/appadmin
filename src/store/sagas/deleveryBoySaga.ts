@@ -39,12 +39,10 @@ function* addDeleveryBoySaga(action: any): any {
     let method = "post";
     let url = `/deleveryboy/add`;
     const response = yield call(request, method, url, action.payload);
-    console.log("franchiseAddResponse = ", response);
     yield put({ type: ADD_DELEVERY_BOY_SUCCESS, payload: "" });
     yield put({ type: HIDE_LOADER });
     yield put({ type: SHOW_SUCCESS_MESSAGE, payload: "Delivery boy added successfully" });
   } catch (error: any) {
-    console.log("ADD DELEVERY BOY ERROR = ", error);
     const errMsg = error?.response?.data?.message || "Please try again.";
     yield put({ type: HIDE_LOADER });
     yield put({ type: SHOW_ERROR_MESSAGE, payload: errMsg });
@@ -60,7 +58,6 @@ function* getDeliveryBoyOnIdSaga(action: any): any {
     yield put({ type: SET_DELEVERY_BOY, payload: response?.data?.data });
     yield put({ type: HIDE_LOADER });
   } catch (error: any) {
-    console.log("ADD DELEVERY BOY ERROR = ", error);
     const errMsg = error?.response?.data?.message || "Please try again.";
     yield put({ type: HIDE_LOADER });
     yield put({ type: SHOW_ERROR_MESSAGE, payload: errMsg });
@@ -74,14 +71,11 @@ function* deleteDeliveryBoyOnIdSaga(action: any): any {
     let url = `/deleveryboy/deleteDeliveryBoy?id=${action.payload}`;
     const response = yield call(request, method, url);
     let { deleveryBoyList } = yield select((state) => state.deleveryBoy);
-    console.log("action.payload = ", action.payload);
     let newList = deleveryBoyList.filter((item: any) => item.id !== action.payload);
-    console.log("newList = ", newList);
     yield put({ type: SET_DELEVERY_BOY_LIST, payload: newList });
     yield put({ type: HIDE_LOADER });
     yield put({ type: SHOW_SUCCESS_MESSAGE, payload: "Delivery boy deleted successfully" });
   } catch (error: any) {
-    console.log("ADD DELEVERY BOY ERROR = ", error);
     const errMsg = error?.response?.data?.message || "Please try again.";
     yield put({ type: HIDE_LOADER });
     yield put({ type: SHOW_ERROR_MESSAGE, payload: errMsg });

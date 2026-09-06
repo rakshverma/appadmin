@@ -3,7 +3,6 @@ import { InputProps } from "../../types";
 
 function Input(props: InputProps) {
   const { label, name, type, placeholder, className, onChange, validationObj, register, error, multiple, value, readOnly, maxLength } = props;
-  console.log("error = ", error);
   return (
     <>
       <label className="form-label">{label}</label>

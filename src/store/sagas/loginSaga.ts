@@ -19,13 +19,11 @@ function* loginSaga(action: any): any {
   try {
     const isPrivateRoute = 0;
     const response = yield call(request, "post", "/auth/login", action.payload, isPrivateRoute);
-    console.log("LOGIN RESPONSE = ", response);
     yield localStorage.setItem("token", response.data.data.token || "");
     yield put({ type: SET_USER_INFO, payload: response?.data?.data });
     yield put({ type: HIDE_LOADER });
     yield put({ type: LOGIN_SUCCESS });
   } catch (error: any) {
-    console.log("LOGIN ERROR = ", error);
     const errMsg = error?.response?.data?.message || "Please try again.";
     yield put({ type: HIDE_LOADER });
     yield put({ type: SHOW_ERROR_MESSAGE, payload: errMsg });

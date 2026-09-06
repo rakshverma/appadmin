@@ -53,7 +53,6 @@ function Table<T extends object>({
   filterOrderByFranchise,
 }: TableProps<T>) {
   // Use the state and functions returned from useTable to build your UI
-  console.log("DATA ROW = ", fromScreen);
   const {
     getTableProps,
     getTableBodyProps,
@@ -82,10 +81,7 @@ function Table<T extends object>({
 
   useEffect(() => {
     // props.dispatch({ type: actions.resetPage })
-    console.log(globalFilter);
   }, [globalFilter]);
-
-  console.log("page= ", pageOptions);
   // Render the UI for your table
   return (
     <>

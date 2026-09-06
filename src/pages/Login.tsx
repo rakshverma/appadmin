@@ -16,11 +16,9 @@ function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const isAuthenticated = useAuth();
-  console.log("isAuth = ", isAuthenticated);
 
   const { isSuccess, isError } = useSelector((state: any) => state.login);
   const { isLoading } = useSelector((state: any) => state.loader);
-  console.log("isSuccess = ", isSuccess);
   const [formData, setFormData] = useState<LoginFormData>({
     email: "",
     password: "",
@@ -41,10 +39,8 @@ function Login() {
   };
 
   const onSubmit = (data: LoginFormData) => {
-    console.log(data);
     dispatch(loginAction(data));
   };
-  console.log("isError = ", isError);
   return (
     <>
       <LoginView

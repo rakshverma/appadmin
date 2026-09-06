@@ -43,7 +43,6 @@ function* addProductSaga(action: any): any {
     formData.append("name", name);
     formData.append("category", category);
     formData.append("description", description);
-    console.log("formData = ", formData);
     yield put({ type: SHOW_LOADER });
     yield put({ type: RESET_PRODUCT_FLAG });
     const method = "post";
@@ -51,7 +50,6 @@ function* addProductSaga(action: any): any {
     const response = yield call(request, method, url, formData, isPrivate, {
       "Content-Type": "multipart/form-data",
     });
-    console.log("add product Response = ", response);
     yield put({ type: HIDE_LOADER });
     yield put({ type: ADD_PRODUCT_SUCCESS, payload: true });
     yield put({
@@ -59,7 +57,6 @@ function* addProductSaga(action: any): any {
       payload: "Product added successfully",
     });
   } catch (e: any) {
-    console.log("ADD product ERROR = ", e);
     const errMsg = e?.response?.data?.message || "Please try again.";
     yield put({ type: HIDE_LOADER });
     yield put({ type: SHOW_ERROR_MESSAGE, payload: errMsg });
@@ -86,7 +83,6 @@ function* editProductSaga(action: any): any {
     const response = yield call(request, method, url, formData, isPrivate, {
       "Content-Type": "multipart/form-data",
     });
-    console.log("edit product Response = ", response);
     yield put({ type: HIDE_LOADER });
     yield put({ type: ADD_PRODUCT_SUCCESS, payload: true });
     yield put({
@@ -94,7 +90,6 @@ function* editProductSaga(action: any): any {
       payload: "Product updated successfully",
     });
   } catch (e: any) {
-    console.log("ADD CATEGORY ERROR = ", e);
     const errMsg = e?.response?.data?.message || "Please try again.";
     yield put({ type: HIDE_LOADER });
     // yield put({ type: ADD_PRODUCT_ERROR, payload: errMsg });
@@ -161,7 +156,6 @@ function* updateProductPriceSaga(action: any): any {
       `/product/updateProductPrice/${action.payload.productId}/${action.payload.distributerId}`,
       action.payload.data
     );
-    console.log("edit price response = ", response);
     yield put({ type: SET_PRICE_SUCCESS });
     yield put({
       type: SHOW_SUCCESS_MESSAGE,
@@ -197,12 +191,10 @@ function* updateProductStatusSaga(action: any): any {
   try {
     yield put({ type: SHOW_LOADER });
     let { productList } = yield select((state) => state.product);
-    console.log("productListproductList = ", productList);
     yield call(request, "put", `/product/status/${action.payload.id}/${action.payload.status}`);
     productList.forEach((item: any) => {
       if (item.id === action.payload.id) item.status = action.payload.status;
     });
-    console.log("productListproductList111 = ", productList);
     yield put({ type: SET_PRODUCT_STATUS, payload: productList });
     yield put({ type: HIDE_LOADER });
   } catch (e: any) {

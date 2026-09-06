@@ -29,11 +29,8 @@ function CategoryList() {
 
   const onClickEdit = (e: any, id: number) => {
     e.preventDefault();
-    console.log("edit CALLED = ", categoryList);
     if (id && categoryList.length) {
-      console.log("edit CALLED11 = ", categoryList.length);
       const details = categoryList.filter((obj: any) => obj.id === id);
-      console.log("details = ", details);
       if (details.length) {
         setEditInfo(details[0]);
         setIsOpen(true);
@@ -47,7 +44,6 @@ function CategoryList() {
   };
 
   const closeModal = () => {
-    console.log("closeModal = called");
     setEditInfo(null);
     dispatch(resetCategoryFlags());
     setIsOpen(false);

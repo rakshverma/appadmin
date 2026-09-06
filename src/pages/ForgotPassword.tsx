@@ -15,7 +15,6 @@ function ForgotPassword() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { isLoading, isSuccess, isError } = useSelector((state: any) => state.login);
-  console.log("isSuccess = ", isSuccess);
   const [formData, setFormData] = useState<ForgotPassFormData>({
     email: "",
   });
@@ -34,10 +33,8 @@ function ForgotPassword() {
   };
 
   const onSubmit = (data: ForgotPassFormData) => {
-    console.log(data);
     dispatch(forgotPassowrdAction(data));
   };
-  console.log("isError = ", isError);
   return (
     <>
       <ForgotPasswordView

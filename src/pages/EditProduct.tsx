@@ -55,12 +55,9 @@ function EditProduct() {
   };
 
   const handleChange = (event: any) => {
-    console.log("event = ", event);
     if (event.target.files) {
-      console.log("files = ", event);
       const files = Array.from(event.target.files);
       setImagePreviews([]);
-      console.log("files = ", files);
       files.forEach((file: any) => {
         const reader = new FileReader();
         reader.onload = (e) => {
@@ -72,7 +69,6 @@ function EditProduct() {
   };
 
   const onSubmit = (data: ProductFormData) => {
-    console.log(data);
     dispatch(editProductAction(data, productId, retainedImages));
   };
 
@@ -85,7 +81,6 @@ function EditProduct() {
   };
 
   const closeModal = () => {
-    console.log("closeModal = called");
     dispatch(resetCategoryFlags());
     setIsOpen(false);
   };
@@ -100,9 +95,6 @@ function EditProduct() {
       setValue("description", product[0].description);
     }
   }, [productList, setValue, productId]);
-
-  console.log("productId = ", productId);
-  console.log("editInfo = ", editInfo);
 
   return (
     <>

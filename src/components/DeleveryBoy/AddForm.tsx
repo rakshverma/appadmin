@@ -26,7 +26,6 @@ function AddForm({
   editId,
   deliveryBoyDetails,
 }: any) {
-  console.log("franchiseListOnRole = ", franchiseListOnRole);
   const districts = districtList.length
     ? districtList.map((item: any) => {
         return { id: item.district, name: item.district };

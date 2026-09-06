@@ -107,7 +107,6 @@ function Dashboard() {
   });
 
   useEffect(() => {
-    console.log("LIST EFFECT CALLED = ", userInfo);
     if (userInfo?.role_id === 1 || userInfo?.role_id === 2) {
       dispatch(getProductListAction());
       dispatch(getOrdersListAction());
@@ -168,26 +167,20 @@ function Dashboard() {
   };
 
   const filterOrderByFranchise = (e: any) => {
-    console.log("e = ", e.target.value);
     dispatch(getOrderListOnFranchiseId(e.target.value));
   };
 
   const handleCancelOrder = (list: any) => {
-    console.log("list = ", list);
-    console.log("orderList = ", orderList);
     if (!list.length) return;
     let check = true;
     list.forEach((itm: any) => {
       const filter = orderList.filter((obj: any) => {
         if (itm == obj.id) {
           const delivery_status = obj.delivery_status.split(",");
-          console.log("delivery_statusdelivery_status = ", delivery_status);
           if (delivery_status.includes("3") || delivery_status.includes("2")) return true;
           else return false;
         } else return false;
       });
-
-      console.log("filter = ", filter);
 
       if (filter.length) {
         check = false;
@@ -209,7 +202,6 @@ function Dashboard() {
     //     return;
     //   }
     // });
-    console.log("check = ", check);
     if (!check) {
       window.alert(
         "some of order contains item which is already assigned to delivery boy or already delivered. Please cancel item from specific order details page."
@@ -238,8 +230,6 @@ function Dashboard() {
     const orders = orderIds.length ? orderList.filter((order: any) => orderIds.includes(order.id)) : [];
     printThermalInvoices(orders);
   };
-
-  console.log("franchiseList = ", franchiseList);
   const quickActions = userInfo?.role_id === 1 ? adminQuickActions : franchiseQuickActions;
   const franchiseOrderCounts = useMemo(() => {
     const counts = orderList.reduce((acc: any, order: any) => {

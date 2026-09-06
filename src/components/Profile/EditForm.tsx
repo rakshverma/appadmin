@@ -37,7 +37,6 @@ function EditForm({
         return { id: item.district, name: item.district };
       })
     : [];
-  console.log("errors_franchise = ", errors);
 
   return (
     <>

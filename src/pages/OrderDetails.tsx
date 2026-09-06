@@ -35,7 +35,6 @@ function OrderDetails() {
     { to: "order/list", name: "Orders" },
     { to: "", name: "Order Details" },
   ];
-  console.log("ididid = ", id);
   useEffect(() => {
     dispatch(getOrderDetailsOnId(id));
     dispatch(getDeliveryBoyOnOrderId(id));
@@ -43,7 +42,6 @@ function OrderDetails() {
 
   useEffect(() => {
     if (orderDetails?.id) {
-      console.log("minti");
       const obj: any = {};
       orderDetails.itemList.forEach((item: any) => {
         obj[item.id] = item.delivery_date;
@@ -61,13 +59,11 @@ function OrderDetails() {
   };
 
   const updateDeliveryBoyOnOrder = (e: any, id: number, detailsId: any) => {
-    console.log("asdasdasd");
     const boyId = e.target.value;
     dispatch(updateDeliveryBoyOnOrderId(boyId, id, detailsId));
   };
 
   const generateOrderPdf = () => {
-    console.log("orderDetails = ", orderDetails);
     generatePdf(orderDetails);
   };
 
@@ -76,14 +72,12 @@ function OrderDetails() {
       const cancelCheckArr = orderDetails.itemList.filter(
         (obj: any) => obj.delivery_status == 1 || obj.delivery_status == 2 || obj.delivery_status == 3
       );
-      console.log("cancelCheckArr = ", cancelCheckArr);
       let mainOrderCancel = false;
       if (cancelCheckArr.length === 0) mainOrderCancel = true;
 
       dispatch(cancelOrderItemAction(orderId, itemId, mainOrderCancel));
     } else return;
   };
-  console.log("orderDetails = ", orderDetails);
 
   const handleAdminNotesChange = (e: any) => {
     setAdminNotes(e.target.value);
@@ -94,8 +88,6 @@ function OrderDetails() {
   };
 
   const updateorderDeliveryDate = (id: any, value: any) => {
-    console.log("date value444 = ", value);
-    console.log("date id = ", id);
     if (id && value) {
       const formatDt = formatDate(value);
       dispatch(updateDeliveryDateOnOrderId(orderDetails.id, id, formatDt));
@@ -105,7 +97,6 @@ function OrderDetails() {
       }));
     }
   };
-  console.log("orderDeliveryDates111 = ", orderDeliveryDates);
   return (
     <>
       <div className="container-fluid" style={{ marginBottom: 100 + "px" }}>

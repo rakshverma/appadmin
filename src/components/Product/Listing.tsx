@@ -13,7 +13,6 @@ function Listing({ pageHeading, breadCrumb, heading, buttonText, onButtonClick, 
   const onClickDelete = (id: any, status: any) => {
     dispatch(updateProductStatus(id, status));
   };
-  console.log("activeTab = ", activeTab);
   return (
     <div className="container-fluid" style={{ marginBottom: 100 + "px" }}>
       <BreadCrumb pageHeading={pageHeading} breadCrumb={breadCrumb} />

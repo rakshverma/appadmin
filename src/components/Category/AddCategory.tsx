@@ -11,9 +11,7 @@ function AddCategory({ isOpen, closeModal, editInfo }: AddCategoryProps) {
   const [categoryError, setCategoryError] = useState("");
 
   useEffect(() => {
-    console.log("USE EFFECT CALLED");
     return () => {
-      console.log("unmount called");
       setCategoryError("");
       setCategoryVal("");
     };
@@ -24,7 +22,6 @@ function AddCategory({ isOpen, closeModal, editInfo }: AddCategoryProps) {
   };
 
   const handleSaveClicked = () => {
-    console.log("handle save clicked");
     if (!categoryVal) {
       setCategoryError("Category name is required");
       return;

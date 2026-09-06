@@ -1,7 +1,6 @@
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 const baseUrl = window.location.origin;
-console.log("Base URL:", baseUrl);
 
 const getDeliveryDates = (orderDetails: any) => {
   if (orderDetails.itemList) {
@@ -68,7 +67,6 @@ const getThermalAddressLines = (orderDetails: any) => {
 };
 
 const generatePdf = (orderDetails: any) => {
-  console.log("orderDetails = ", orderDetails);
   const doc = new jsPDF();
 
   // Set the document properties (optional)
@@ -145,7 +143,6 @@ const generatePdf = (orderDetails: any) => {
 };
 
 export const generateMultiplePdf = (orderAray: any) => {
-  console.log("orderAray = ", orderAray);
   const doc = new jsPDF();
 
   orderAray.forEach((orderDetails: any, index: number) => {

@@ -147,7 +147,6 @@ function ProductCard({
 }
 
 function EnabledDatePicker({ deliveryDay, productId, onDateChange, defaultDeliveryDate }: any) {
-  console.log("defaultDeliveryDate = ", defaultDeliveryDate);
   const filterDates = (date: any, deliveryDay: any) => {
     // Disable dates that are not Monday, Wednesday, or Friday
     const day = date.toLocaleString("en-US", { weekday: "long" });

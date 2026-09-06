@@ -15,7 +15,6 @@ function ChangePassword({ isOpen, closeModal }: any) {
 
   useEffect(() => {
     return () => {
-      console.log("unmount called");
       setPasswordError({});
       dispatch(resetUserFlags());
       setFormData({
@@ -33,7 +32,6 @@ function ChangePassword({ isOpen, closeModal }: any) {
   const handleSaveClicked = () => {
     const errors = validateForm();
     if (Object.keys(errors).length > 0) {
-      console.log(errors);
       setPasswordError(errors);
       return;
     }

@@ -47,7 +47,6 @@ function AddDeleveryBoy() {
 
   useEffect(() => {
     if (editId) {
-      console.log("deliveryBoyDetails111 = ", deliveryBoyDetails);
       reset({
         name: deliveryBoyDetails?.name || "",
         phone: deliveryBoyDetails?.phone_number || "",
@@ -81,7 +80,6 @@ function AddDeleveryBoy() {
 
   const onSubmit = (data: any) => {
     if (editId) {
-      console.log("datata = ", data);
       dispatch(editDeliveryBoyDetails(data, editId));
     } else {
       dispatch(addDeleveryBoyAction(data));

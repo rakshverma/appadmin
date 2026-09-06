@@ -58,7 +58,6 @@ function ProfileView({ userInfo }: any) {
             <div className="border p-3">
               {zipCodes.length > 0
                 ? zipCodes.map((item: any, i: number) => {
-                    console.log("item.zip_codes = ", item);
                     return (
                       <div className="form-check form-check-inline mb-2" key={`zip_${i}`}>
                         {item}

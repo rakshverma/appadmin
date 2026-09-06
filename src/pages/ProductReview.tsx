@@ -19,7 +19,6 @@ function ProductReview() {
 
   const onClickDelete = (e: any, id: number) => {
     e.preventDefault();
-    console.log("helooooooooooo = ", id);
     dispatch(deleteReviewOnId(id));
   };
 

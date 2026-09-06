@@ -19,7 +19,6 @@ function* getCustomerListSaga(): any {
     yield put({ type: SET_CUSTOMER_LIST, payload: response?.data?.data });
     yield put({ type: HIDE_LOADER });
   } catch (error: any) {
-    console.log("GET CATEGORY ERROR = ", error);
     const errMsg = error?.response?.data?.message || "Please try again.";
     yield put({ type: HIDE_LOADER });
     yield put({ type: SHOW_ERROR_MESSAGE, payload: errMsg });

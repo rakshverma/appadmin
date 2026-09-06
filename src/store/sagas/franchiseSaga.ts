@@ -44,7 +44,6 @@ function* getFranchiseSaga(): any {
 }
 
 function* getDistrictListSaga(): any {
-  console.log("hellooooooooo");
   try {
     yield put({ type: SHOW_LOADER });
     yield put({ type: RESET_FLAGS });
@@ -59,7 +58,6 @@ function* getDistrictListSaga(): any {
 }
 
 function* getPinCodesonDistrictSaga(action: any): any {
-  console.log("action.payload.district = ", action.payload.district);
   try {
     yield put({ type: SHOW_LOADER });
     yield put({ type: RESET_FLAGS });
@@ -79,12 +77,10 @@ function* addFranchiseSaga(action: any): any {
     let method = "post";
     let url = `/franchise/add`;
     const response = yield call(request, method, url, action.payload);
-    console.log("franchiseAddResponse = ", response);
     yield put({ type: ADD_FRANCHISE_SUCCESS, payload: "" });
     yield put({ type: HIDE_LOADER });
     yield put({ type: SHOW_SUCCESS_MESSAGE, payload: "Franchise added successfully" });
   } catch (error: any) {
-    console.log("ADD FRANCHISE ERROR = ", error);
     const errMsg = error?.response?.data?.message || "Please try again.";
     yield put({ type: HIDE_LOADER });
     yield put({ type: SHOW_ERROR_MESSAGE, payload: errMsg });
@@ -97,12 +93,10 @@ function* editFranchiseSaga(action: any): any {
     let method = "put";
     let url = `/franchise/edit`;
     const response = yield call(request, method, url, action.payload);
-    console.log("franchiseAddResponse = ", response);
     yield put({ type: ADD_FRANCHISE_SUCCESS, payload: "" });
     yield put({ type: HIDE_LOADER });
     yield put({ type: SHOW_SUCCESS_MESSAGE, payload: "Franchise updated successfully" });
   } catch (error: any) {
-    console.log("ADD FRANCHISE ERROR = ", error);
     const errMsg = error?.response?.data?.message || "Please try again.";
     yield put({ type: HIDE_LOADER });
     yield put({ type: SHOW_ERROR_MESSAGE, payload: errMsg });
@@ -139,7 +133,6 @@ function* getShippingLIstOnFranchiseIdSaga(action: any): any {
   try {
     yield put({ type: SHOW_LOADER });
     const response = yield call(request, "get", `/franchise/getShippingCostListOnId/${action.payload}`);
-    console.log("response = ", response);
     yield put({ type: SET_SHIPPING_LIST_ON_FRANCHISE, payload: response?.data?.data });
     yield put({ type: HIDE_LOADER });
   } catch (e: any) {
@@ -157,7 +150,6 @@ function* updateShippingOnFranchiseSaga(action: any): any {
       franchiseId: action.payload.franchiseId,
     };
     const response = yield call(request, "post", `/franchise/updateShippingCostListOnId`, body);
-    console.log("response = ", response);
     yield put({ type: HIDE_LOADER });
     yield put({ type: SHOW_SUCCESS_MESSAGE, payload: "Shipping cost updated successfully" });
   } catch (e: any) {
@@ -171,7 +163,6 @@ function* getFranchiseDetailsOnIdSaga(action: any): any {
   try {
     yield put({ type: SHOW_LOADER });
     const response = yield call(request, "get", `/franchise/getFranchiseDetailsOnId?franchiseId=${action.payload}`);
-    console.log("response = ", response);
     yield put({ type: HIDE_LOADER });
     yield put({ type: SET_FRANCHISE_DETAILS, payload: response?.data?.data.franchiseDetails });
     yield put({ type: SET_PINCODE_LIST, payload: response?.data?.data.pinCodeList });
@@ -186,12 +177,9 @@ function* deleteFranchiseOnIdSaga(action: any): any {
   try {
     yield put({ type: SHOW_LOADER });
     const response = yield call(request, "delete", `/franchise/deleteFranchise?franchiseId=${action.payload}`);
-    console.log("response = ", response);
     yield put({ type: HIDE_LOADER });
     let { franchiseList } = yield select((state) => state.franchise);
-    console.log("action.payload = ", action.payload)
     let newList = franchiseList.filter((item: any) => item.user_id !== action.payload);
-    console.log("newList = ", newList);
     yield put({ type: SET_FRANCHISE_LIST, payload: newList });
   } catch (e: any) {
     const errMsg = e?.response?.data?.message || "Please try again.";

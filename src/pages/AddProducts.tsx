@@ -48,12 +48,9 @@ function AddProducts() {
   };
 
   const handleChange = (event: any) => {
-    console.log("event = ", event);
     if (event.target.files) {
-      console.log("files = ", event);
       const files = Array.from(event.target.files);
       setImagePreviews([]);
-      console.log("files = ", files);
       files.forEach((file: any) => {
         const reader = new FileReader();
         reader.onload = (e) => {
@@ -65,7 +62,6 @@ function AddProducts() {
   };
 
   const onSubmit = (data: ProductFormData) => {
-    console.log(data);
     dispatch(addProductAction(data));
   };
 
@@ -74,7 +70,6 @@ function AddProducts() {
   };
 
   const closeModal = () => {
-    console.log("closeModal = called");
     dispatch(resetCategoryFlags());
     setIsOpen(false);
   };

@@ -21,7 +21,6 @@ function AddShippingCost() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { shipping_list } = useSelector((state: any) => state.franchise);
-  console.log("shipping_list = ", shipping_list);
   const {
     handleSubmit,
     control,

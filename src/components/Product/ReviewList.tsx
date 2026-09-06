@@ -40,7 +40,6 @@ function ReviewList({ reviewList, onClickDelete }: any) {
       accessor: "actions",
       Cell: (props: any) => {
         // const { id, name, inserted_at } = props.row.original;
-        console.log("props.row.original.id == ", props.row.original);
         return (
           <>
             <Link

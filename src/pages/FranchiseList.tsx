@@ -17,7 +17,6 @@ function FranchiseList() {
   const { franchiseList, franchiseRequests } = useSelector((state: any) => state.franchise);
   const [activeTab, setActiveTab] = useState("list");
   useEffect(() => {
-    console.log("LIST EFFECT CALLED");
     dispatch(getFranchiseListAction());
     dispatch(franchiseRequestListAction());
   }, [dispatch]);
@@ -31,7 +30,6 @@ function FranchiseList() {
   };
 
   const onClickDelete = (id: any) => {
-    console.log("fran id = ", id);
     if (window.confirm("deleting franchise will remove all pin codes associated to it. Do you want to continue?") === true) {
       dispatch(deleteFranchiseAction(id));
     }

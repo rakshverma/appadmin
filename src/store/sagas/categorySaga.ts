@@ -25,12 +25,10 @@ function* addCategorySaga(action: any): any {
       url = `/category/edit?id=${action.payload.editId}`;
     }
     const response = yield call(request, method, url, action.payload);
-    console.log("categoryResponse = ", response);
     yield put({ type: HIDE_LOADER });
     yield put({ type: ADD_CATEGORY_SUCCESS, payload: {} });
     yield put({ type: SHOW_SUCCESS_MESSAGE, payload: "Category added successfully" });
   } catch (error: any) {
-    console.log("ADD CATEGORY ERROR = ", error);
     const errMsg = error?.response?.data?.message || "Please try again.";
     yield put({ type: HIDE_LOADER });
     yield put({ type: SHOW_ERROR_MESSAGE, payload: errMsg });
@@ -44,7 +42,6 @@ function* getCategorySaga(action: any): any {
     yield put({ type: SET_CATEGORY_LIST, payload: response?.data?.data });
     yield put({ type: HIDE_LOADER });
   } catch (error: any) {
-    console.log("GET CATEGORY ERROR = ", error);
     yield put({ type: HIDE_LOADER });
     yield put({ type: SET_CATEGORY_LIST, payload: [] });
   }

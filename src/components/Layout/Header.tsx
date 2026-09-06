@@ -10,7 +10,6 @@ function Header() {
   const token = localStorage.getItem("token");
   const logoPath = `${process.env.PUBLIC_URL}/assets/imgs/jhatkabyte-logo.png`;
   const avatarPath = `${process.env.PUBLIC_URL}/assets/imgs/avatar.png`;
-  console.log("userInfo = ", userInfo);
   useEffect(() => {
     if (!Object.keys(userInfo).length && token) {
       dispatch(getUserInfo());

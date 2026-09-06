@@ -33,7 +33,6 @@ function Orders() {
   const [selectedOrders, setSelectedOrders] = useState([]);
 
   useEffect(() => {
-    console.log("LIST EFFECT CALLED");
     dispatch(getProductListAction());
     dispatch(getOrdersListAction());
   }, [dispatch]);
@@ -54,7 +53,6 @@ function Orders() {
   };
 
   const filterOrderByFranchise = (e: any) => {
-    console.log("e = ", e.target.value);
     dispatch(getOrderListOnFranchiseId(e.target.value));
   };
 
@@ -63,21 +61,16 @@ function Orders() {
   };
 
   const handleCancelOrder = (list: any) => {
-    console.log("list = ", list);
-    console.log("orderList = ", orderList);
     if (!list.length) return;
     let check = true;
     list.forEach((itm: any) => {
       const filter = orderList.filter((obj: any) => {
         if (itm == obj.id) {
           const delivery_status = obj.delivery_status.split(",");
-          console.log("delivery_statusdelivery_status = ", delivery_status);
           if (delivery_status.includes("3") || delivery_status.includes("2")) return true;
           else return false;
         } else return false;
       });
-
-      console.log("filter = ", filter);
 
       if (filter.length) {
         check = false;
@@ -99,7 +92,6 @@ function Orders() {
     //     return;
     //   }
     // });
-    console.log("check = ", check);
     if (!check) {
       window.alert(
         "some of order contains item which is already assigned to delivery boy or already delivered. Please cancel item from specific order details page."
@@ -108,8 +100,6 @@ function Orders() {
     }
     dispatch(cancelOrdersAction(list));
   };
-
-  console.log("franchiseList = ", franchiseList);
   const handleCompleteOrder = (list: any) => {
     if (!list.length) return;
     dispatch(completeOrdersAction(list));

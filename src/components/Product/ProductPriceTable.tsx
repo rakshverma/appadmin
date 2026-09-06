@@ -9,7 +9,6 @@ function ProductPriceTable({ productList }: any) {
   const dispatch = useDispatch();
   const { franchiseList, franchiseId } = useSelector((state: any) => state.product);
   const [showError, setShowError] = useState<any>(null);
-  console.log("franchiseIdfranchiseId=", franchiseId);
   const showProductImage = (data: string) => {
     const images = JSON.parse(data);
     if (images.length) {

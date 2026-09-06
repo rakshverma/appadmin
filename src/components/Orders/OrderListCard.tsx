@@ -23,14 +23,12 @@ function OrderListCard({
   handleGenerateSummary,
   handleThermalPrint,
 }: any) {
-  console.log("orderListorderList = ", orderList);
   const dispatch = useDispatch();
   const radioRef: any = useRef();
   const [isOpen, setIsOpen] = useState(false);
   const [checkboxError, setCheckboxError] = useState<string | null>(null);
   const [orderSelected, setOrderSelected] = useState("");
   const [selectedOrders, setSelectedOrders] = useState<any>([]);
-  console.log("orderSelected = ", orderSelected);
 
   const onClickEdit = () => {};
   const onClickDelete = () => {};
@@ -53,7 +51,6 @@ function OrderListCard({
   };
 
   const handleCheckboxSelect = (orderId: any) => {
-    console.log("orderId = ", orderId);
     if (selectedOrders.includes(orderId)) {
       setSelectedOrders(selectedOrders.filter((id: any) => id !== orderId));
     } else {
@@ -98,8 +95,6 @@ function OrderListCard({
     handleThermalPrint(selectedOrders);
     setSelectedOrders([]);
   };
-
-  console.log("orderList = ", orderList);
 
   return (
     <>

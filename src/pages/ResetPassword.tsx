@@ -17,7 +17,6 @@ function ResetPassword() {
   const dispatch = useDispatch();
   const [searchParams] = useSearchParams();
   const { isLoading, isSuccess, isError } = useSelector((state: any) => state.forgotPass);
-  console.log("isSuccess = ", isSuccess);
   const [formData, setFormData] = useState<ResetPassFormData>({
     password: "",
     confirmPassword: "",
@@ -38,10 +37,8 @@ function ResetPassword() {
   };
 
   const onSubmit = (data: ResetPassFormData) => {
-    console.log(data);
     dispatch(resetPassowrdAction(data));
   };
-  console.log("isError = ", isError);
   return (
     <>
       <ResetPasswordView

@@ -12,7 +12,6 @@ const getReceiptUrl = (receiptUrl: string) => {
 
 const OrderCheckbox = ({ id, selectedOrders, onSelect }: any) => {
   const handleCheckboxChange = () => {
-    console.log("hellll = ", selectedOrders.includes(id));
     onSelect(id);
   };
 

@@ -16,14 +16,10 @@ function ProductList() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  console.log("location = ", location);
   const tab = location?.state?.tab || "home";
   const { productList, franchiseId } = useSelector((state: any) => state.product);
   const [activeTab, setActiveTab] = useState(tab);
-  console.log("product list called = ", tab);
-  console.log("productList = ", productList);
   useEffect(() => {
-    console.log("LIST EFFECT CALLED");
     dispatch(getProductListAction());
   }, [dispatch]);
 

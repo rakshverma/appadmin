@@ -24,7 +24,6 @@ export const getProductPriceEditInfo = (data: any) => {
   return { type: GET_PRODUCT_PRICE_EDIT_INFO, payload: data };
 };
 export const setProductPriceOnFranchiseId = (data: any) => {
-  console.log(`data=${data}`);
   return { type: SET_PRODUCT_PRICE, payload: data };
 };
 export const updateProductPriceAction = (data: any, productId: any, distributerId: any) => {
