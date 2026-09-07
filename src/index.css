@@ -209,6 +209,34 @@ a:hover {
   background: var(--admin-primary) !important;
 }
 
+.order-summary-mode-tabs {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 18px;
+  padding: 6px;
+  border: 1px solid var(--admin-border);
+  border-radius: 8px;
+  background: var(--admin-surface-soft);
+}
+
+.order-summary-mode-tabs button {
+  min-height: 34px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--admin-muted);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.order-summary-mode-tabs button.active {
+  color: #ffffff;
+  background: var(--admin-primary);
+  box-shadow: var(--admin-shadow-soft);
+}
+
 .vertical-menu {
   top: 72px !important;
   background: #111827 !important;

@@ -36,6 +36,27 @@ const getOrderRows = (orderDetails: any, includePrice = true) => {
 
 const getPrintableAddress = (orderDetails: any) => `${orderDetails.shipping_address || ""}`.split(",").map((item) => item.trim()).filter(Boolean);
 
+const getOrderPincode = (orderDetails: any) => {
+  const explicitPin = `${orderDetails.pin_code || ""}`.trim();
+  if (explicitPin) return explicitPin;
+  const match = `${orderDetails.shipping_address || ""}`.match(/\b\d{6}\b/);
+  return match ? match[0] : "";
+};
+
+const getOrderLocality = (orderDetails: any) => {
+  const explicitLocality = `${orderDetails.locality || ""}`.trim();
+  if (explicitLocality) return explicitLocality;
+  const addressParts = getPrintableAddress(orderDetails)
+    .filter((part) => !/pin\s*code|\b\d{6}\b/i.test(part))
+    .filter((part) => part !== orderDetails.state && part !== orderDetails.district);
+  return addressParts.length >= 3 ? addressParts[addressParts.length - 1] : addressParts[0] || "----";
+};
+
+const getSingleDeliveryDate = (orderDetails: any) => {
+  const dates = getDeliveryDates(orderDetails).map((date: any) => `${date || ""}`.trim()).filter(Boolean);
+  return Array.from(new Set(dates)).join(", ") || "----";
+};
+
 const escapeHtml = (value: any) =>
   `${value || ""}`
     .replace(/&/g, "&amp;")
@@ -45,7 +66,12 @@ const escapeHtml = (value: any) =>
     .replace(/'/g, "&#039;");
 
 const getThermalAddressLines = (orderDetails: any) => {
-  const address = getPrintableAddress(orderDetails).join(", ").replace(/\s+/g, " ").trim();
+  const pincode = getOrderPincode(orderDetails);
+  const address = getPrintableAddress(orderDetails)
+    .join(", ")
+    .replace(new RegExp(`,?\\s*pin\\s*code\\s*-?\\s*${pincode}\\s*$`, "i"), "")
+    .replace(/\s+/g, " ")
+    .trim();
   const words = address.split(" ").filter(Boolean);
   const lines = [""];
   const maxLineLength = 34;
@@ -60,8 +86,18 @@ const getThermalAddressLines = (orderDetails: any) => {
     lines.push(word);
   });
 
-  return lines.slice(0, 2).map((line, index) => {
-    if (index === 1 && line.length > maxLineLength) return `${line.slice(0, maxLineLength - 3)}...`;
+  const twoLines = lines.slice(0, 2);
+  if (pincode) {
+    const pinSuffix = `PIN ${pincode}`;
+    if (twoLines.length === 1) twoLines.push(pinSuffix);
+    else if (!twoLines[1].includes(pincode)) twoLines[1] = `${twoLines[1]}, ${pinSuffix}`;
+  }
+
+  return twoLines.map((line, index) => {
+    if (index === 1 && line.length > maxLineLength) {
+      const pinSuffix = pincode ? `, PIN ${pincode}` : "";
+      return `${line.slice(0, Math.max(0, maxLineLength - pinSuffix.length - 3))}...${pinSuffix}`;
+    }
     return line || "----";
   });
 };
@@ -231,6 +267,9 @@ export const printThermalInvoices = (orderArray: any[]) => {
     .map((orderDetails: any) => {
       const rows = getOrderRows(orderDetails, false);
       const address = getThermalAddressLines(orderDetails);
+      const pincode = getOrderPincode(orderDetails);
+      const locality = getOrderLocality(orderDetails);
+      const deliveryDate = getSingleDeliveryDate(orderDetails);
       return `
         <section class="receipt">
           <h1>JhatkaByte</h1>
@@ -238,7 +277,10 @@ export const printThermalInvoices = (orderArray: any[]) => {
           <p>Order: ${escapeHtml(orderDetails.ref_no)}</p>
           <p>Date: ${new Date(orderDetails.inserted_at).toLocaleDateString()}</p>
           <p>Name: ${escapeHtml(orderDetails.name)}</p>
-          <p>Phone: ${escapeHtml(orderDetails.phone_number)}</p>
+          <p>Mobile: ${escapeHtml(orderDetails.phone_number)}</p>
+          <p>Delivery Date: ${escapeHtml(deliveryDate)}</p>
+          <p>Locality: ${escapeHtml(locality)}</p>
+          <p>Pincode: ${escapeHtml(pincode || "----")}</p>
           <table>
             <thead>
               <tr>

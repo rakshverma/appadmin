@@ -29,6 +29,7 @@ function OrderListCard({
   const [checkboxError, setCheckboxError] = useState<string | null>(null);
   const [orderSelected, setOrderSelected] = useState("");
   const [selectedOrders, setSelectedOrders] = useState<any>([]);
+  const [summaryMode, setSummaryMode] = useState<"delivery" | "shop-owner">("delivery");
 
   const onClickEdit = () => {};
   const onClickDelete = () => {};
@@ -88,7 +89,7 @@ function OrderListCard({
   };
 
   const onSummaryButtonClick = () => {
-    handleGenerateSummary(orderList);
+    handleGenerateSummary(orderList, summaryMode);
   };
 
   const onThermalButtonClick = () => {
@@ -114,11 +115,31 @@ function OrderListCard({
                 onStatusButtonClick={onStatusButtonClick}
                 processButtonText={"Process Orders"}
                 onProcessButtonClick={onProcessButtonClick}
-                summaryButtonText={"Generate Summary"}
+                summaryButtonText={"Download Summary"}
                 onSummaryButtonClick={onSummaryButtonClick}
                 thermalButtonText={"Thermal Print"}
                 onThermalButtonClick={onThermalButtonClick}
               />
+              <div className="order-summary-mode-tabs" role="tablist" aria-label="Order summary type">
+                <button
+                  type="button"
+                  className={summaryMode === "delivery" ? "active" : ""}
+                  onClick={() => setSummaryMode("delivery")}
+                  role="tab"
+                  aria-selected={summaryMode === "delivery"}
+                >
+                  Generate summary for delivery
+                </button>
+                <button
+                  type="button"
+                  className={summaryMode === "shop-owner" ? "active" : ""}
+                  onClick={() => setSummaryMode("shop-owner")}
+                  role="tab"
+                  aria-selected={summaryMode === "shop-owner"}
+                >
+                  Generate summary for shop owner
+                </button>
+              </div>
               {checkboxError && <p style={{ textAlign: "right", color: "red" }}>{checkboxError}</p>}
               <div className="row">
                 <div className="col-md-12">

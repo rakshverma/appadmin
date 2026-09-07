@@ -1,3 +1,8 @@
+import jsPDF from "jspdf";
+import "jspdf-autotable";
+
+type SummaryMode = "delivery" | "shop-owner";
+
 const splitList = (value: any) => `${value || ""}`.split(",");
 
 const csvValue = (value: any) => {
@@ -76,25 +81,14 @@ const buildOrderRows = (order: any) => {
     .sort((a: any, b: any) => b.itemTotal - a.itemTotal);
 };
 
-const generateOrderSummary = (orderList: any[]) => {
-  const rows = [
-    [
-      "Order No",
-      "Name",
-      "Mobile",
-      "Franchise Name",
-      "Item Name",
-      "Delivery Date",
-      "Quantity",
-      "Unit",
-      "Count",
-      "Unit Price",
-      "Shipping Charges",
-      "Total Quantity",
-      "Total Money",
-    ],
-  ];
+const getHeaders = (mode: SummaryMode) => {
+  const common = ["Order No", "Name", "Mobile", "Franchise Name", "Item Name", "Delivery Date", "Quantity", "Unit", "Count", "Total Quantity"];
+  if (mode === "shop-owner") return common;
+  return [...common.slice(0, 9), "Unit Price", "Shipping Charges", common[9], "Total Money"];
+};
 
+const buildSummaryRows = (orderList: any[], mode: SummaryMode) => {
+  const rows = [getHeaders(mode)];
   const grandTotalQuantity: any = {};
   let grandTotalMoney = 0;
 
@@ -107,6 +101,23 @@ const generateOrderSummary = (orderList: any[]) => {
     orderRows.forEach((row: any) => {
       addQuantityTotal(orderTotalQuantity, row.totalQuantity);
       orderItemsTotalMoney += row.itemTotal;
+
+      if (mode === "shop-owner") {
+        rows.push([
+          row.orderNo,
+          row.customer,
+          row.phone,
+          row.franchise,
+          row.itemName,
+          row.deliveryDate,
+          row.quantity,
+          row.unit,
+          row.count,
+          row.totalQuantityLabel,
+        ]);
+        return;
+      }
+
       rows.push([
         row.orderNo,
         row.customer,
@@ -125,6 +136,12 @@ const generateOrderSummary = (orderList: any[]) => {
     });
 
     Object.keys(orderTotalQuantity).forEach((key) => addQuantityTotal(grandTotalQuantity, { key, value: orderTotalQuantity[key] }));
+
+    if (mode === "shop-owner") {
+      rows.push([order.ref_no, "Order Total", "", "", "", "", "", "", "", formatQuantityTotals(orderTotalQuantity)]);
+      return;
+    }
+
     grandTotalMoney += orderItemsTotalMoney + shippingCost;
     rows.push([
       order.ref_no,
@@ -143,23 +160,46 @@ const generateOrderSummary = (orderList: any[]) => {
     ]);
   });
 
-  rows.push([
-    "All Orders Total",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    formatQuantityTotals(grandTotalQuantity),
-    grandTotalMoney.toFixed(2),
-  ]);
+  if (mode === "shop-owner") {
+    rows.push(["All Orders Total", "", "", "", "", "", "", "", "", formatQuantityTotals(grandTotalQuantity)]);
+  } else {
+    rows.push(["All Orders Total", "", "", "", "", "", "", "", "", "", "", formatQuantityTotals(grandTotalQuantity), grandTotalMoney.toFixed(2)]);
+  }
 
-  downloadCsv(`order-summary-${new Date().toISOString().slice(0, 10)}.csv`, rows);
+  return rows;
+};
+
+const downloadPdf = (fileName: string, rows: any[][], mode: SummaryMode) => {
+  const doc = new jsPDF({ orientation: "landscape" });
+  const title = mode === "shop-owner" ? "Shop Owner Order Summary" : "Delivery Order Summary";
+
+  doc.setProperties({ title });
+  doc.setFontSize(14);
+  doc.text(title, 14, 14);
+  doc.setFontSize(9);
+  doc.text(`Generated: ${new Date().toLocaleString()}`, 14, 21);
+
+  // @ts-ignore
+  doc.autoTable({
+    startY: 28,
+    head: [rows[0]],
+    body: rows.slice(1),
+    styles: { fontSize: mode === "shop-owner" ? 7.5 : 6.8, cellPadding: 1.6, overflow: "linebreak" },
+    headStyles: { fillColor: [219, 63, 36], textColor: 255 },
+    alternateRowStyles: { fillColor: [248, 250, 252] },
+    margin: { left: 8, right: 8 },
+  });
+
+  doc.save(fileName);
+};
+
+const generateOrderSummary = (orderList: any[], mode: SummaryMode = "delivery") => {
+  const rows = buildSummaryRows(orderList, mode);
+  const date = new Date().toISOString().slice(0, 10);
+  const filePrefix = mode === "shop-owner" ? "shop-owner-summary" : "delivery-summary";
+
+  downloadCsv(`${filePrefix}-${date}.csv`, rows);
+  downloadPdf(`${filePrefix}-${date}.pdf`, rows, mode);
 };
 
 export default generateOrderSummary;

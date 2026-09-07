@@ -110,9 +110,9 @@ function Orders() {
     dispatch(processOrdersAction(list));
   };
 
-  const handleGenerateSummary = (list: any) => {
+  const handleGenerateSummary = (list: any, mode = "delivery") => {
     if (!list.length) return;
-    generateOrderSummary(list);
+    generateOrderSummary(list, mode as any);
   };
 
   const handleThermalPrint = (orderIds: any) => {
