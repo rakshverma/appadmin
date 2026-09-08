@@ -1,5 +1,4 @@
 import React, { useMemo } from "react";
-import { Link } from "react-router-dom";
 import Table from "../Table";
 
 function CustomerList({ customerList, onClickDelete }: any) {
@@ -45,14 +44,16 @@ function CustomerList({ customerList, onClickDelete }: any) {
           // const { id, name, inserted_at } = props.row.original;
           return (
             <>
-              <Link
-                to=""
+              <button
+                type="button"
+                className="admin-icon-action"
                 onClick={(e) => {
                   onClickDelete(e, props.row.original.id);
                 }}
+                title="Delete customer"
               >
                 <i className="mdi mdi-delete font-size-24 text-danger"></i>
-              </Link>
+              </button>
             </>
           );
         },

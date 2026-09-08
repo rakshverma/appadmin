@@ -1,7 +1,5 @@
-import React, { useMemo, useEffect } from "react";
-import { Link } from "react-router-dom";
+import React from "react";
 import Table from "../Table";
-import { convertDateToLocal } from "../../utils/common";
 import { uploadUrl } from "../../utils/axios";
 
 function ReviewList({ reviewList, onClickDelete }: any) {
@@ -42,14 +40,16 @@ function ReviewList({ reviewList, onClickDelete }: any) {
         // const { id, name, inserted_at } = props.row.original;
         return (
           <>
-            <Link
-              to=""
+            <button
+              type="button"
+              className="admin-icon-action"
               onClick={(e) => {
                 onClickDelete(e, props.row.original.id);
               }}
+              title="Delete review"
             >
               <i className="mdi mdi-delete font-size-24 text-danger"></i>
-            </Link>
+            </button>
           </>
         );
       },

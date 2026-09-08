@@ -31,10 +31,6 @@ function OrderListCard({
   const [selectedOrders, setSelectedOrders] = useState<any>([]);
   const [summaryMode, setSummaryMode] = useState<"delivery" | "shop-owner">("delivery");
 
-  const onClickEdit = () => {};
-  const onClickDelete = () => {};
-  const onClickEditRequest = () => {};
-
   const closeModal = () => {
     setIsOpen(false);
     setOrderSelected("");
@@ -89,7 +85,13 @@ function OrderListCard({
   };
 
   const onSummaryButtonClick = () => {
-    handleGenerateSummary(orderList, summaryMode);
+    if (!selectedOrders.length) {
+      setCheckboxError("Please select at least one order to generate summary.");
+      return;
+    }
+    const orders = orderList.filter((order: any) => selectedOrders.includes(order.id));
+    handleGenerateSummary(orders, summaryMode);
+    setSelectedOrders([]);
   };
 
   const onThermalButtonClick = () => {

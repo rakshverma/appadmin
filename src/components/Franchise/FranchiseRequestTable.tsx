@@ -1,5 +1,4 @@
 import React, { useMemo } from "react";
-import { Link } from "react-router-dom";
 import Table from "../Table";
 import { convertDateToLocal } from "../../utils/common";
 
@@ -47,14 +46,16 @@ function FranchiseRequestTable({ franchiseRequests, onClickEditRequest }: any) {
           // const { id, name, inserted_at } = props.row.original;
           return (
             <>
-              <Link
-                to=""
+              <button
+                type="button"
+                className="admin-icon-action"
                 onClick={(e) => {
                   onClickEditRequest(e, props.row.original.id);
                 }}
+                title="Edit franchise request"
               >
                 <i className="mdi mdi-lead-pencil font-size-24 me-2 text-info"></i>
-              </Link>
+              </button>
             </>
           );
         },

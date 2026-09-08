@@ -1,7 +1,5 @@
 import React, { useMemo } from "react";
-import { Link } from "react-router-dom";
 import Table from "../Table";
-import { convertDateToLocal } from "../../utils/common";
 
 function DeleveryBoyTable({ deleveryBoyList, onClickEdit, onClickDelete }: any) {
   const columns = useMemo(
@@ -47,19 +45,23 @@ function DeleveryBoyTable({ deleveryBoyList, onClickEdit, onClickDelete }: any) 
           // const { id, name, inserted_at } = props.row.original;
           return (
             <>
-              <Link
-                to=""
+              <button
+                type="button"
+                className="admin-icon-action"
                 onClick={(e) => {
                   onClickEdit(e, props.row.original.id);
                 }}
+                title="Edit delivery boy"
               >
                 <i className="mdi mdi-lead-pencil font-size-24 me-2 text-info"></i>
-              </Link>
+              </button>
               <button
-                style={{ backgroundColor: "#ffffff", borderWidth: 0 }}
+                type="button"
+                className="admin-icon-action"
                 onClick={(e) => {
                   onClickDelete(props.row.original.id);
                 }}
+                title="Delete delivery boy"
               >
                 <i className="mdi mdi-delete font-size-24 text-danger"></i>
               </button>

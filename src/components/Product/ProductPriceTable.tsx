@@ -108,9 +108,9 @@ function ProductPriceTable({ productList }: any) {
           } else {
             return (
               <>
-                <Link to={""} onClick={() => showErrorOnClickButton(props.row.id)} className="btn btn-primary btn-sm" title="Edit Product Price">
+                <button type="button" onClick={() => showErrorOnClickButton(props.row.id)} className="btn btn-primary btn-sm" title="Edit Product Price">
                   Set Price
-                </Link>
+                </button>
                 {showError && showError.id === props.row.id ? <p style={{ color: "red" }}>{showError.msg}</p> : null}
               </>
             );

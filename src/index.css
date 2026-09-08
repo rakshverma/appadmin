@@ -237,6 +237,22 @@ a:hover {
   box-shadow: var(--admin-shadow-soft);
 }
 
+.admin-icon-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 30px;
+  min-height: 30px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  vertical-align: middle;
+}
+
+.admin-icon-action i {
+  margin: 0 !important;
+}
+
 .vertical-menu {
   top: 72px !important;
   background: #111827 !important;
@@ -687,6 +703,10 @@ a:hover {
   display: inline-flex;
   align-items: center;
   margin-bottom: 6px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--admin-primary);
   font-size: 12px;
   font-weight: 800;
   text-decoration: none;

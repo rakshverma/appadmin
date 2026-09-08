@@ -8,11 +8,7 @@ function InformationCard({ heading, value, date, avatarClass, avatarBgClass }: a
           <div className="d-flex">
             <div className="flex-grow-1">
               <p className="fw-bold mb-2">{heading}</p>
-              <h2 className="mb-0">
-                <a href="on-way.html" className="text-info">
-                  {value}
-                </a>
-              </h2>
+              <h2 className="mb-0 text-info">{value}</h2>
               <small>{date ? `as on ${date}` : ""}</small>
             </div>
             <div className="flex-shrink-0 align-self-center">

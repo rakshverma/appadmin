@@ -3,6 +3,15 @@ import "jspdf-autotable";
 
 type SummaryMode = "delivery" | "shop-owner";
 
+const sanitizeFilePart = (value: any, fallback = "all") => {
+  const cleaned = `${value || ""}`
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "_")
+    .replace(/^_+|_+$/g, "");
+  return cleaned || fallback;
+};
+
 const splitList = (value: any) => `${value || ""}`.split(",");
 
 const csvValue = (value: any) => {
@@ -79,6 +88,24 @@ const buildOrderRows = (order: any) => {
       };
     })
     .sort((a: any, b: any) => b.itemTotal - a.itemTotal);
+};
+
+const getFranchiseNameForFile = (orderList: any[]) => {
+  const names = Array.from(new Set(orderList.map((order) => `${order?.franchise_name || ""}`.trim()).filter(Boolean)));
+  return sanitizeFilePart(names.length === 1 ? names[0] : "multiple_franchises", "franchise");
+};
+
+const getDeliveryDateForFile = (orderList: any[]) => {
+  const dates = Array.from(
+    new Set(
+      orderList
+        .flatMap((order) => splitList(order.delivery_date))
+        .map((date) => `${date || ""}`.trim())
+        .filter(Boolean)
+    )
+  );
+  const date = dates.length === 1 ? dates[0] : "multiple_dates";
+  return sanitizeFilePart(date.replace(/\//g, "-"), "delivery_date");
 };
 
 const getHeaders = (mode: SummaryMode) => {
@@ -195,11 +222,11 @@ const downloadPdf = (fileName: string, rows: any[][], mode: SummaryMode) => {
 
 const generateOrderSummary = (orderList: any[], mode: SummaryMode = "delivery") => {
   const rows = buildSummaryRows(orderList, mode);
-  const date = new Date().toISOString().slice(0, 10);
-  const filePrefix = mode === "shop-owner" ? "shop-owner-summary" : "delivery-summary";
+  const modeSuffix = mode === "shop-owner" ? "_shop_owner" : "_delivery";
+  const filePrefix = `summary_${getFranchiseNameForFile(orderList)}_${getDeliveryDateForFile(orderList)}${modeSuffix}`;
 
-  downloadCsv(`${filePrefix}-${date}.csv`, rows);
-  downloadPdf(`${filePrefix}-${date}.pdf`, rows, mode);
+  downloadCsv(`${filePrefix}.csv`, rows);
+  downloadPdf(`${filePrefix}.pdf`, rows, mode);
 };
 
 export default generateOrderSummary;

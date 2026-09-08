@@ -3,6 +3,10 @@ import { Link } from "react-router-dom";
 import { BreadcrumbProps } from "../../types";
 function BreadCrumb(props: BreadcrumbProps) {
   const { pageHeading, breadCrumb } = props;
+  const getRoute = (to: string) => {
+    if (!to) return "/dashboard";
+    return to.startsWith("/") ? to : `/${to}`;
+  };
   return (
     <div className="row">
       <div className="col-12">
@@ -14,7 +18,7 @@ function BreadCrumb(props: BreadcrumbProps) {
               {breadCrumb.map((item, i) => {
                 return (
                   <li className="breadcrumb-item active" key={`brcrum_${i}`}>
-                    <Link to={item.to}>{item.name}</Link>
+                    <Link to={getRoute(item.to)}>{item.name}</Link>
                   </li>
                 );
               })}

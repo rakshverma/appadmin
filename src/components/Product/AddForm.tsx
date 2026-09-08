@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import BreadCrumb from "../BreadCrumb";
 import ListingCardHeadings from "../ListingCardHeadings";
 import Button from "../Button";
@@ -95,10 +94,10 @@ function AddForm({
                         </div>
                         <div className="col-md-6">
                           <div className="form-group">
-                            <Link to="" onClick={openCategoryModal} className="admin-inline-action">
+                            <button type="button" onClick={openCategoryModal} className="admin-inline-action">
                               <i className="fa fa-plus me-1"></i>
                               New Category
-                            </Link>
+                            </button>
                             <Select
                               label={"Category"}
                               name={"category"}

@@ -109,29 +109,6 @@ function LeftMenu() {
                         </>
                       )}
 
-                      {/* {userInfo?.role_id === 1 && (
-                        <>
-                          <li className="menu-title">Pages</li>
-                          <li>
-                            <a href="home-page.html" className="waves-effect">
-                              <i className="bx bx-right-arrow-circle"></i>
-                              <span> Home</span>
-                            </a>
-                          </li>
-                          <li>
-                            <a href="about-us.html" className="waves-effect">
-                              <i className="bx bx-right-arrow-circle"></i>
-                              <span> About Us</span>
-                            </a>
-                          </li>
-                          <li>
-                            <a href="contact-us.html" className="waves-effect">
-                              <i className="bx bx-right-arrow-circle"></i>
-                              <span> Contact Us</span>
-                            </a>
-                          </li>
-                        </>
-                      )} */}
                     </ul>
                   </div>
                 </div>

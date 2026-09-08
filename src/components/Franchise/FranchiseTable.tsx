@@ -74,14 +74,16 @@ function FranchiseTable({ franchiseList, onClickEdit, onClickDelete }: any) {
           // const { id, name, inserted_at } = props.row.original;
           return (
             <>
-              <Link
-                to=""
+              <button
+                type="button"
+                className="admin-icon-action"
                 onClick={(e) => {
                   onClickEdit(e, props.row.original.user_id);
                 }}
+                title="Edit franchise"
               >
                 <i className="mdi mdi-lead-pencil font-size-24 me-2 text-info"></i>
-              </Link>
+              </button>
               <button
                 style={{ backgroundColor: "#ffffff", borderWidth: 0 }}
                 onClick={() => {

@@ -2,6 +2,15 @@ import jsPDF from "jspdf";
 import "jspdf-autotable";
 const baseUrl = window.location.origin;
 
+const sanitizeFilePart = (value: any, fallback = "all") => {
+  const cleaned = `${value || ""}`
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "_")
+    .replace(/^_+|_+$/g, "");
+  return cleaned || fallback;
+};
+
 const getDeliveryDates = (orderDetails: any) => {
   if (orderDetails.itemList) {
     return orderDetails.itemList.map((item: any) => item.delivery_date || "");
@@ -55,6 +64,25 @@ const getOrderLocality = (orderDetails: any) => {
 const getSingleDeliveryDate = (orderDetails: any) => {
   const dates = getDeliveryDates(orderDetails).map((date: any) => `${date || ""}`.trim()).filter(Boolean);
   return Array.from(new Set(dates)).join(", ") || "----";
+};
+
+const formatDeliveryDateForFile = (value: any) => {
+  const date = `${value || ""}`.split(",")[0].trim();
+  return sanitizeFilePart(date.replace(/\//g, "-"), "delivery_date");
+};
+
+const getFranchiseNameForFile = (orders: any[]) => {
+  const names = Array.from(new Set(orders.map((order) => `${order?.franchise_name || order?.franchise || ""}`.trim()).filter(Boolean)));
+  return sanitizeFilePart(names.length === 1 ? names[0] : "multiple_franchises", "franchise");
+};
+
+const getDeliveryDateForFile = (orders: any[]) => {
+  const dates = Array.from(new Set(orders.map((order) => getSingleDeliveryDate(order)).filter((date) => date && date !== "----")));
+  return formatDeliveryDateForFile(dates.length === 1 ? dates[0] : "multiple_dates");
+};
+
+const buildDownloadName = (prefix: string, orders: any[], extension: "pdf") => {
+  return `${prefix}_${getFranchiseNameForFile(orders)}_${getDeliveryDateForFile(orders)}.${extension}`;
 };
 
 const escapeHtml = (value: any) =>
@@ -175,7 +203,7 @@ const generatePdf = (orderDetails: any) => {
   doc.text(footerText, footerX, footerY, { align: "center" });
 
   // Save or display the PDF
-  doc.save(`invoice_${orderDetails.ref_no}.pdf`);
+  doc.save(buildDownloadName("invoice", [orderDetails], "pdf"));
 };
 
 export const generateMultiplePdf = (orderAray: any) => {
@@ -257,7 +285,7 @@ export const generateMultiplePdf = (orderAray: any) => {
   });
 
   // Save or display the PDF
-  doc.save(`invoices.pdf`);
+  doc.save(buildDownloadName("invoice", orderAray, "pdf"));
 };
 
 export const printThermalInvoices = (orderArray: any[]) => {
@@ -317,11 +345,12 @@ export const printThermalInvoices = (orderArray: any[]) => {
 
   const printWindow = window.open("", "_blank", "width=420,height=640");
   if (!printWindow) return;
+  const fileName = buildDownloadName("thermal", orderArray, "pdf");
   printWindow.document.write(`
     <!doctype html>
     <html>
       <head>
-        <title>Thermal Invoices</title>
+        <title>${escapeHtml(fileName)}</title>
         <style>
           @page { size: 80mm auto; margin: 4mm; }
           body { font-family: Arial, sans-serif; font-size: 11px; margin: 0; color: #000; }
