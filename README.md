@@ -1,46 +1,102 @@
-# Getting Started with Create React App
+# JhatkaByte Admin Portal
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This folder contains the React admin portal for orders, customers, franchises, products, delivery boys, invoices, and summaries.
 
-## Available Scripts
+## Before Deployment
 
-In the project directory, you can run:
+1. Deploy the backend first.
 
-### `npm start`
+   The admin portal needs the backend API URL before it is built.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+2. Configure environment variables.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+   Copy `.env.example` and set production values in your hosting provider. Do not commit `.env`.
 
-### `npm test`
+   Required values:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+   ```env
+   REACT_APP_API_BASE_URL=https://your-backend-domain.com
+   REACT_APP_ADMIN_API_BASE_URL=https://your-backend-domain.com/admin
+   REACT_APP_UPLOAD_URL=https://your-backend-domain.com/uploads
+   REACT_APP_ADMIN_BASENAME=
+   ```
 
-### `npm run build`
+   If the admin portal is hosted under a sub-path, set the basename:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+   ```env
+   REACT_APP_ADMIN_BASENAME=/admin
+   ```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+3. Make sure backend CORS allows the admin domain.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+   In the backend env, include the deployed admin URL:
 
-### `npm run eject`
+   ```env
+   CORS_ORIGINS=https://your-admin-domain.com
+   ```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+4. Install dependencies.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+   ```bash
+   npm ci
+   ```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+5. Build the admin portal.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+   ```bash
+   npm run build
+   ```
 
-## Learn More
+6. Check the main admin routes after deployment.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+   ```text
+   /
+   /dashboard
+   /order/list
+   /customers/list
+   /franchise/list
+   /product/list
+   ```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Docker Deployment
+
+The Dockerfile builds the React app and serves it with nginx.
+
+Build with direct backend URLs:
+
+```bash
+docker build \
+  --build-arg REACT_APP_API_BASE_URL=https://your-backend-domain.com \
+  --build-arg REACT_APP_ADMIN_API_BASE_URL=https://your-backend-domain.com/admin \
+  --build-arg REACT_APP_UPLOAD_URL=https://your-backend-domain.com/uploads \
+  -t jhatkabyte-admin .
+```
+
+Run:
+
+```bash
+docker run -p 8080:8080 jhatkabyte-admin
+```
+
+If the admin container should proxy API calls through nginx, build with the default `/api`, `/admin-api`, and `/uploads` values and set:
+
+```env
+BACKEND_ORIGIN=http://your-backend-service:3000
+NGINX_PORT=8080
+```
+
+## Useful Commands
+
+```bash
+npm start
+npm run build
+```
+
+## Final Checklist
+
+- Backend is already deployed and healthy.
+- Admin env points to the correct backend.
+- Backend `CORS_ORIGINS` includes the admin domain.
+- `npm run build` passes.
+- Login works with the admin user created from the backend.
+- Order invoice, thermal print, and summary download work in the deployed admin portal.
